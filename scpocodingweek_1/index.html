@@ -1,0 +1,2479 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <title>Coding week R for beginners</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Sylvain Lapoix, Datactivist" />
+    <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <link href="libs/remark-css-0.0.1/datactivist.css" rel="stylesheet" />
+    <link href="libs/remark-css-0.0.1/datactivist-fonts.css" rel="stylesheet" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# Coding week<br/>R for beginners
+## Day 1 : first approach<br/>and manipulation
+### Sylvain Lapoix, Datactivist
+### Sciences Po, 17/02/2020
+
+---
+
+
+layout: true
+  
+
+&lt;div class='my-footer'&gt;&lt;span&gt;R - Beginner / 17/02/2020&lt;/span&gt; &lt;center&gt;&lt;div class=logo&gt;&lt;img src='https://github.com/datactivist/slides_datactivist/raw/master/inst/rmarkdown/templates/xaringan/resources/img/fond_noir_monochrome.png' width='100px'&gt;&lt;/center&gt;&lt;/span&gt;&lt;/div&gt; 
+
+---
+
+class: center, middle
+
+Ces slides en ligne : http://sylvainlapoix.github.io/introcoding_2020_1
+
+Sources : https://github.com/sylvainlapoix/introcoding_2020_1
+
+
+Les productions de Datactivist sont librement réutilisables selon les termes de la licence [Creative Commons 4.0 BY-SA](https://creativecommons.org/licenses/by-sa/4.0/legalcode.fr).
+
+&lt;BR&gt;
+&lt;BR&gt;
+
+![](https://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-sa.png)
+
+
+---
+
+# Disclaimer : my moto
+
+&gt; There are no silly questions.
+
+--
+
+&gt; There's only awkward silences.
+
+
+---
+class: inverse, center, middle
+
+# 1 - The gear
+
+---
+## Why R ?
+R is a powerful, versatile and still improving programming language designed by and for daily data users.
+
+--
+
+It benefits from several keys components that make it incredibly handy :
+* a deep and **easy-to-find documentation** ;
+* a broad spectrum of **extensions and packages to fit any needs** (this presentation is entirely made in R) ;
+* a huge **connectivity** with other techs and tools (APIs, other languages such as Python, SQL or Javascript, etc.) ;
+* a **large and friendly community** ;
+* and it's **open source**, come on !
+
+--
+
+And for your specific need as .red[**policy analysts**], using R instead of Excel or (worse) Numbers means :
+* better tools ;
+* easier to share ;
+* simple to reproduce.
+
+
+---
+
+background-image: url(https://media.giphy.com/media/Ae7SI3LoPYj8Q/giphy.gif)
+class: center, top
+## You'll never be alone in R.
+
+---
+## Your new data hub : Rstudio
+As other programming languages, R can be used in the command line (which we'll refer to as "cli" further on, for "command line interface").
+
+But you'll benefit greatly from using a programming environnement.
+
+The one we'll choose is Rstudio. It will help you :
+* organize your files and data ;
+* keep track of your environment (we'll get back to that later) ;
+* solve most of common issues you'll encounter in an easier fashion.
+
+--
+
+Plus : it has MANY resources in [its cheatsheet page](https://www.rstudio.com/resources/cheatsheets/).
+
+---
+
+background-image: url(https://media.giphy.com/media/Gpf8A8aX2uWAg/giphy.gif)
+class: center, bottom
+
+### But let's take a look around ourselves
+
+---
+class: inverse, center, middle
+
+# 2 - The basics
+
+
+---
+
+## Data types
+
+You'll stumble upon 3 main types of data in R (and in computers in general) :
+
+.pull-left[1. **numeric values**, labeled "num" ;
+2. **strings**, labeled "chr" for "character" ;
+3. **boolean**, labeled "logi" for "logical".]
+
+.pull-right[1. quantities : you can make math with ;
+2. succession of character (can't do math with) ;
+3. TRUE or FALSE (basically the answer to a closed question)]
+
+--
+
+To those mains types you'll use other values for specific cases :
+* "NA", "#N/A" or "NaN", depending on the source, for "**not available**", describes a missing value in a dataset. **It's not "zero"** : it's a logical value that can be calculated (or evaluated) ;
+* "NULL" is an undefined value. It can't be evaluated and, in most cases, can't be coherced into something else.
+
+Other data types can be encountered in more advanced usage, such as geomatics ans statistics.
+
+---
+
+### Quick search : can you find 5 of each data type in the room ?
+
+---
+
+## R CLI basics
+
+The "command line interface" or CLI is just a big supercharged calculator that can do many simple operations :
+
+```r
+1+1-12*24/2 # Basic arithmetic
+```
+
+```
+## [1] -142
+```
+
+```r
+42 %% 5 # Modulo
+```
+
+```
+## [1] 2
+```
+
+But it can also handle variables, meaning it can "store" values or data structures into a name and allow you to manipulate it. We'll say that we "assign" an object to a variable. In R, we do it with an arrow&lt;sup&gt;*&lt;/sup&gt; :
+
+
+```r
+puregold &lt;- (1+sqrt(5))/2
+puregold
+```
+
+```
+## [1] 1.618034
+```
+
+---
+
+### Using functions
+
+We talked earlier about **data types**. But how can we check the type of a specific data ?
+
+Simple : you just need to put the data into a small program that performs the check for you. That's what we call a function and it works that way. Here, `typeof()` is **the function**, `3` **the argument** and `"double"` **the output** :
+
+
+```r
+typeof(3)
+```
+
+```
+## [1] "double"
+```
+
+Some functions need a specific number of argument, some can use optional arguments and some need no argument. For example, `getcwd()` will tell you where you are in you filesystem without to provide further information to it.
+
+Some functions will output a single data point, other series of data and some will perform an operation without outputing anything (being *silent* as we say).
+
+There's pretty much a function for every routine task you may encounter.
+
+---
+
+## Data structures : vectors 1
+
+Data can be stored in different type of structures, depending on your needs or the tools you use.
+
+The **vector** is the core structure of R :
+* it is one dimensional ;
+* it is "atomic" (can contain only one type of data) ;
+* it is indexable (you can call any value it contains by its index).
+
+You can create a vector with the function `c()` with the values separated by commas :
+
+
+```r
+c(4, 8, 15, 16, 23, 42)
+```
+
+```
+## [1]  4  8 15 16 23 42
+```
+
+
+---
+
+## Data structures : vectors 2
+
+If you type it without any other command, it will vanish. To "store" it properly, you can "assign" it to a variable of your choice :
+
+
+```r
+lost &lt;- c(4, 8, 15, 16, 23, 42)
+```
+
+You can call any value with an index :
+
+
+```r
+lost[1]
+```
+
+```
+## [1] 4
+```
+
+**Warning** : for those used to other languages : indexing starts at 1 in R (contrary to Python for ex).
+
+---
+
+## Data structures : vectors 3
+
+Data selection is essential to manipulate data : sorting, filtering, testing ... all of those operations rely on selection mecanism.
+
+To select multiple values of a vector, you'll use brackets and put a vector inside of it to specify the sequence :
+* with comma(s) if the values aren't consecutive ;
+* with colon(s) if you're looking for a range.
+
+
+```r
+year &lt;- c("Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec")
+year[c(1:4)]
+```
+
+```
+## [1] "Jan" "Feb" "Mar" "Apr"
+```
+
+```r
+year[c(1,6,10)]
+```
+
+```
+## [1] "Jan" "Jun" "Oct"
+```
+
+
+---
+
+background-image: url(https://media.giphy.com/media/g0ShXDbLT7g4M/giphy.gif)
+class: inverse, center, top
+
+### Yes : a vector within a vector
+
+---
+
+## Data structures : matrices
+
+A matrix is a two dimensionnal data structure that can store one type of data.
+
+You can create it with the function `matrix(values, [nrow=x, ncol=y])`. For exemple, to create a 4 by 5 matrix containing all value between 1 and 20 we'll go :
+
+
+```r
+matrix(1:20, nrow = 4)
+```
+
+```
+##      [,1] [,2] [,3] [,4] [,5]
+## [1,]    1    5    9   13   17
+## [2,]    2    6   10   14   18
+## [3,]    3    7   11   15   19
+## [4,]    4    8   12   16   20
+```
+
+You can coherce a vector into a matrix or a variable containing a certain number of values.
+
+
+```r
+matrix(lost, nrow=3)
+```
+
+```
+##      [,1] [,2]
+## [1,]    4   16
+## [2,]    8   23
+## [3,]   15   42
+```
+
+
+---
+
+## Data structures : data frames
+
+The go-to structure for data manipulation will be dataframes, two dimensionnal data structures that can contain different data types for each column.
+
+It's usually the data structure you'll end up with by loading an external fill. But you can make on youself by using the `data.frame()` function. To coherce several vectors together, for example.
+
+
+```r
+found &lt;- c(1, 2, 3, 5, 8, 13)
+data.frame(lost, found)
+```
+
+```
+##   lost found
+## 1    4     1
+## 2    8     2
+## 3   15     3
+## 4   16     5
+## 5   23     8
+## 6   42    13
+```
+
+
+
+You'll work with a similar type called "tibbles" in a short time.
+
+
+---
+class: inverse, center, middle
+
+# 3 - The exploration
+
+
+---
+
+## Loading a dataset
+
+From the outside, you can use : `read.csv()` for CSVs with the path to the file.
+
+*Lazy tip : if you're not used to paths, you can store the path into a variable after choosing by with the function file.choose().*
+
+For semi-colon separated values (or SCSV), you can use `read.csv2()`.
+
+But you'll encounter many other formats to handle.
+For text formats, we'll use `read.delim()`
+
+You can also load data from within libraries (every single has one). But well'll get to that later.
+
+Let's get into it with some ACTUAL data : [the list of the first names declared in the city of Bergerac](https://www.data.gouv.fr/fr/datasets/bergerac-listes-annuelles-des-prenoms-des-nouveaux-nes-declares-a-letat-civil/).
+
+---
+
+
+## What to do with it ?
+
+We can poke around to know what's in our file.
+
+First, we'll load it in our environment by assigning it to a variable :
+
+
+```r
+firstnames &lt;- read.csv("../data/24037-etatcivil-prenoms-2018.csv")
+```
+
+### Beware of the accents!
+
+You may encounter some special character that will be read in a strange way. In French, for example, accents may be replaced by series of non-sensical signs.
+
+To be sure you can read all the signs is to specify the `encoding` as an argument of `read.csv()` as so :
+
+
+```r
+# for French accents, you can use "UTF-8" and sometimes "Latin-1" or "Latin1"
+# test each to find the one that works best !
+
+firstnames &lt;- read.csv("../data/24037-etatcivil-prenoms-2018.csv", encoding = "UTF-8")
+```
+
+
+
+---
+
+## What to do with it ?
+
+
+Let's do three basic stuff. Each time, we'll use the variable in which we stored the database as the only argument :
+* check the name of the variables with `names()`
+* look at the first rows with `head()`
+* get a glimpse of the data with `summary()`
+
+
+```r
+names(firstnames) &lt;- c("city_name","insee_code","child_gender","child_1stname","occurrences","year")
+```
+
+
+---
+
+### Get an idea of the distribution
+
+One of the most useful information we can gather from the start is **the distribution** of the data.
+
+Meaning how the different values are spread across the database for each variable.
+
+We can call the values for a specific variable by using `$` and adding the name of the variable. For example, we'll do `head(firstnames$ENFANT_PRENOM)` to see the first 6 first names in the database.
+
+If we want to know how many time each value appears in the datasets for a specific variable, we'll use the function `table()` with the variable we want to study. For example :
+
+
+```r
+table(firstnames$child_gender)
+```
+
+```
+## 
+##  Féminin Masculin 
+##      266      257
+```
+
+
+---
+
+### Let's make our first graph
+
+.pull-left[
+We'll stumble upon two types of variables :
+* **continuous variables**, that can take any value in a range (hence, numeric) ;
+* discontinuous or **discrete variables**, that only have a few possibilities (this is the case of some numeric and all character or logical variables).
+
+When we have a continuous variable, we can study the distribution in a very effective way with a **histogram**. A histogram visualises the frequency of each value. We have only on continuous variable here, `NOMBRE_OCCURRENCES`.
+]
+
+.pull-right[
+Here is a histogram of this variable :
+
+
+```r
+hist(firstnames$occurrences)
+```
+
+![](index_files/figure-html/unnamed-chunk-15-1.png)&lt;!-- --&gt;
+
+]
+
+---
+
+### Method : know what you manipulate
+
+Before we go any further, we need to assess what every component of the dataset means in the real world (*IRL*). To stick to the data science typology, we'll use the following term to describe the elements of a dataset :
+
+![](./img/dataset_structure.png)
+
+
+In this case, what does each **observation** stands for ? What does each **variable** mean ? How were the **values** computed ?
+
+.footnote[Source : [R for data science](https://r4ds.had.co.nz/tidy-data.html), Hadley Whickam.]
+
+---
+
+## Let's call our first library
+
+To make more of this dataset, we'll use a set of functions called **a library**. Most libraries are themed to fit specific tasks. In our case, we need tools to manipulate, wrangle and visualise the data. That's why we'll be installing **tidyverse**.
+
+
+```r
+# install.packages("tidyverse")
+library("tidyverse")
+```
+
+```
+## ── Attaching packages ────────────────────────────────────────────────────────────────────────────────────── tidyverse 1.3.0 ──
+```
+
+```
+## ✓ ggplot2 3.2.1     ✓ purrr   0.3.3
+## ✓ tibble  2.1.3     ✓ dplyr   0.8.4
+## ✓ tidyr   1.0.2     ✓ stringr 1.4.0
+## ✓ readr   1.3.1     ✓ forcats 0.4.0
+```
+
+```
+## ── Conflicts ───────────────────────────────────────────────────────────────────────────────────────── tidyverse_conflicts() ──
+## x dplyr::filter() masks stats::filter()
+## x dplyr::lag()    masks stats::lag()
+```
+
+
+
+---
+
+### Side note : errors and warnings
+
+You may have encountered some colored output loading the library. Especially some .red[red and scary ones].
+
+--
+
+Don't panic : it will take at least 5 minutes for the hackers to break into your computer.
+
+--
+
+Just kidding.
+
+Those outputs may be of two kinds : warnings or errors. Let's explain :
+* a **warning** is just way the program signals you that it did something without asking (cohercing a type into another, hidding some missing data, etc.) ;
+* an **error** means that something was not done as you asked (couldn't make the caculation because of the type, couldn't find a file at the specified path, etc.).
+
+
+---
+
+### Side note : tests 1/2
+
+A test is an operation designed to check a condition on a object. It outputs wether **TRUE** or **FALSE**. It can be performed in a limited number of ways :
+
+
+```r
+5 == 3 # strict equality
+```
+
+```
+## [1] FALSE
+```
+
+```r
+5 &lt; 3 # strict inferiority
+```
+
+```
+## [1] FALSE
+```
+
+```r
+5 &gt;= 3 # superior or equal
+```
+
+```
+## [1] TRUE
+```
+
+```r
+5 != 3 # opposite
+```
+
+```
+## [1] TRUE
+```
+
+
+---
+
+### Side note : tests 2/2
+
+In R, a test performed on a one dimensional data structure (vector, list, variable of a dataframe ...) output a vector of logical values. Each values being the result of the test for the value of the same index in the tested data structure.
+
+This logical vector can be used to select values according to a condition.
+
+Hence :
+**Tests are the base of conditional selection.**
+
+
+```r
+firstnames$child_gender == "Masculin"
+```
+
+```
+##   [1]  TRUE FALSE  TRUE FALSE  TRUE  TRUE FALSE  TRUE FALSE FALSE  TRUE FALSE
+##  [13]  TRUE  TRUE FALSE FALSE  TRUE FALSE  TRUE  TRUE FALSE FALSE FALSE FALSE
+##  [25] FALSE FALSE FALSE  TRUE  TRUE FALSE  TRUE FALSE FALSE FALSE FALSE  TRUE
+##  [37] FALSE  TRUE  TRUE FALSE FALSE FALSE FALSE  TRUE  TRUE FALSE FALSE  TRUE
+##  [49]  TRUE FALSE FALSE  TRUE  TRUE  TRUE FALSE  TRUE  TRUE  TRUE FALSE FALSE
+##  [61] FALSE  TRUE  TRUE  TRUE FALSE  TRUE  TRUE FALSE  TRUE FALSE FALSE FALSE
+##  [73] FALSE  TRUE  TRUE FALSE  TRUE FALSE FALSE FALSE  TRUE  TRUE FALSE FALSE
+##  [85] FALSE FALSE FALSE  TRUE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE  TRUE
+##  [97] FALSE FALSE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE  TRUE FALSE  TRUE
+## [109] FALSE FALSE  TRUE FALSE  TRUE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE
+## [121] FALSE  TRUE  TRUE  TRUE FALSE  TRUE  TRUE FALSE FALSE FALSE FALSE FALSE
+## [133]  TRUE FALSE FALSE  TRUE  TRUE  TRUE FALSE  TRUE FALSE  TRUE FALSE FALSE
+## [145] FALSE  TRUE FALSE  TRUE  TRUE FALSE  TRUE  TRUE FALSE  TRUE FALSE  TRUE
+## [157]  TRUE  TRUE FALSE FALSE  TRUE  TRUE FALSE  TRUE FALSE  TRUE  TRUE FALSE
+## [169] FALSE  TRUE  TRUE  TRUE FALSE  TRUE FALSE  TRUE  TRUE  TRUE FALSE FALSE
+## [181] FALSE FALSE  TRUE FALSE  TRUE  TRUE FALSE FALSE FALSE FALSE FALSE  TRUE
+## [193]  TRUE  TRUE  TRUE FALSE  TRUE  TRUE  TRUE  TRUE FALSE  TRUE  TRUE FALSE
+## [205]  TRUE FALSE  TRUE FALSE  TRUE FALSE FALSE  TRUE FALSE FALSE FALSE  TRUE
+## [217] FALSE  TRUE  TRUE FALSE FALSE  TRUE FALSE FALSE FALSE  TRUE FALSE  TRUE
+## [229]  TRUE  TRUE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE  TRUE
+## [241]  TRUE  TRUE FALSE  TRUE FALSE FALSE FALSE  TRUE FALSE FALSE  TRUE FALSE
+## [253] FALSE FALSE FALSE FALSE FALSE  TRUE  TRUE  TRUE FALSE  TRUE  TRUE FALSE
+## [265] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE
+## [277]  TRUE FALSE  TRUE FALSE FALSE  TRUE  TRUE  TRUE  TRUE FALSE FALSE  TRUE
+## [289]  TRUE  TRUE FALSE FALSE  TRUE  TRUE  TRUE FALSE  TRUE FALSE FALSE  TRUE
+## [301] FALSE  TRUE  TRUE FALSE FALSE FALSE  TRUE FALSE FALSE  TRUE  TRUE FALSE
+## [313] FALSE  TRUE  TRUE FALSE  TRUE  TRUE FALSE  TRUE FALSE  TRUE  TRUE  TRUE
+## [325] FALSE  TRUE FALSE  TRUE  TRUE  TRUE  TRUE FALSE FALSE FALSE FALSE  TRUE
+## [337]  TRUE  TRUE FALSE FALSE  TRUE  TRUE FALSE FALSE  TRUE  TRUE FALSE  TRUE
+## [349]  TRUE  TRUE  TRUE  TRUE FALSE  TRUE  TRUE  TRUE FALSE FALSE  TRUE  TRUE
+## [361]  TRUE FALSE  TRUE FALSE  TRUE FALSE FALSE FALSE  TRUE FALSE  TRUE FALSE
+## [373]  TRUE  TRUE  TRUE  TRUE FALSE  TRUE FALSE  TRUE  TRUE FALSE FALSE  TRUE
+## [385]  TRUE  TRUE  TRUE FALSE  TRUE FALSE FALSE  TRUE  TRUE FALSE FALSE  TRUE
+## [397]  TRUE  TRUE  TRUE FALSE  TRUE  TRUE FALSE FALSE FALSE  TRUE FALSE FALSE
+## [409] FALSE  TRUE FALSE  TRUE FALSE FALSE FALSE  TRUE FALSE FALSE  TRUE  TRUE
+## [421]  TRUE  TRUE FALSE  TRUE  TRUE  TRUE  TRUE FALSE FALSE FALSE FALSE  TRUE
+## [433]  TRUE FALSE  TRUE FALSE FALSE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE FALSE
+## [445]  TRUE  TRUE  TRUE FALSE  TRUE  TRUE FALSE  TRUE FALSE FALSE FALSE FALSE
+## [457]  TRUE  TRUE  TRUE FALSE  TRUE  TRUE FALSE FALSE FALSE FALSE  TRUE FALSE
+## [469] FALSE FALSE  TRUE FALSE FALSE  TRUE  TRUE FALSE  TRUE FALSE  TRUE  TRUE
+## [481]  TRUE  TRUE  TRUE  TRUE FALSE  TRUE  TRUE  TRUE  TRUE  TRUE FALSE  TRUE
+## [493] FALSE  TRUE  TRUE FALSE  TRUE  TRUE  TRUE FALSE FALSE  TRUE  TRUE  TRUE
+## [505]  TRUE  TRUE  TRUE  TRUE FALSE  TRUE FALSE FALSE  TRUE FALSE FALSE FALSE
+## [517] FALSE  TRUE FALSE  TRUE FALSE FALSE  TRUE
+```
+
+
+---
+
+### Filter() : to focus on specific groups 1/2
+
+`filter()` allows you to select observations based on a test. The arguments are :
+1. the dataset ;
+2. one or several tests.
+
+You can select based on discrete values :
+
+```r
+dplyr::filter(firstnames, child_gender == "Masculin")
+```
+
+```
+##     city_name insee_code child_gender   child_1stname occurrences year
+## 1    Bergerac      24037     Masculin           Aaron           4 2018
+## 2    Bergerac      24037     Masculin      Abdeljalil           1 2018
+## 3    Bergerac      24037     Masculin         Achille           2 2018
+## 4    Bergerac      24037     Masculin            Adam           1 2018
+## 5    Bergerac      24037     Masculin            Adem           1 2018
+## 6    Bergerac      24037     Masculin            Aimé           1 2018
+## 7    Bergerac      24037     Masculin          Alaric           1 2018
+## 8    Bergerac      24037     Masculin           Alban           2 2018
+## 9    Bergerac      24037     Masculin       Alexandre           1 2018
+## 10   Bergerac      24037     Masculin           Alexy           1 2018
+## 11   Bergerac      24037     Masculin             Ali           1 2018
+## 12   Bergerac      24037     Masculin     Alpha-oumar           1 2018
+## 13   Bergerac      24037     Masculin          Altaïr           1 2018
+## 14   Bergerac      24037     Masculin          Alyael           1 2018
+## 15   Bergerac      24037     Masculin          Amaury           2 2018
+## 16   Bergerac      24037     Masculin            Amin           1 2018
+## 17   Bergerac      24037     Masculin            Amir           3 2018
+## 18   Bergerac      24037     Masculin            Anas           1 2018
+## 19   Bergerac      24037     Masculin          Andréa           1 2018
+## 20   Bergerac      24037     Masculin            Anes           1 2018
+## 21   Bergerac      24037     Masculin          Angelo           1 2018
+## 22   Bergerac      24037     Masculin         Anthony           1 2018
+## 23   Bergerac      24037     Masculin         Antoine           2 2018
+## 24   Bergerac      24037     Masculin         Antonin           4 2018
+## 25   Bergerac      24037     Masculin          Arnaud           1 2018
+## 26   Bergerac      24037     Masculin          Arsène           1 2018
+## 27   Bergerac      24037     Masculin          Arthur           8 2018
+## 28   Bergerac      24037     Masculin           Aubin           1 2018
+## 29   Bergerac      24037     Masculin        Augustin           1 2018
+## 30   Bergerac      24037     Masculin         Auxence           1 2018
+## 31   Bergerac      24037     Masculin            Axel           2 2018
+## 32   Bergerac      24037     Masculin           Ayden           1 2018
+## 33   Bergerac      24037     Masculin           Ayoub           2 2018
+## 34   Bergerac      24037     Masculin        Baptiste           2 2018
+## 35   Bergerac      24037     Masculin            Beau           1 2018
+## 36   Bergerac      24037     Masculin           Bilel           1 2018
+## 37   Bergerac      24037     Masculin         Cameron           1 2018
+## 38   Bergerac      24037     Masculin         Camille           1 2018
+## 39   Bergerac      24037     Masculin          Cédric           1 2018
+## 40   Bergerac      24037     Masculin          Célian           1 2018
+## 41   Bergerac      24037     Masculin          Charly           2 2018
+## 42   Bergerac      24037     Masculin         Clément           1 2018
+## 43   Bergerac      24037     Masculin           David           1 2018
+## 44   Bergerac      24037     Masculin           Délio           1 2018
+## 45   Bergerac      24037     Masculin         Djibril           2 2018
+## 46   Bergerac      24037     Masculin            Eden           4 2018
+## 47   Bergerac      24037     Masculin           Edzio           1 2018
+## 48   Bergerac      24037     Masculin            Elie           1 2018
+## 49   Bergerac      24037     Masculin            Élie           1 2018
+## 50   Bergerac      24037     Masculin          Elijah           1 2018
+## 51   Bergerac      24037     Masculin            Elio           1 2018
+## 52   Bergerac      24037     Masculin          Eliott           1 2018
+## 53   Bergerac      24037     Masculin           Elvyn           1 2018
+## 54   Bergerac      24037     Masculin            Elyo           1 2018
+## 55   Bergerac      24037     Masculin            Élyo           1 2018
+## 56   Bergerac      24037     Masculin           Émile           1 2018
+## 57   Bergerac      24037     Masculin          Émilio           1 2018
+## 58   Bergerac      24037     Masculin        Emmanuel           2 2018
+## 59   Bergerac      24037     Masculin            Enzo           1 2018
+## 60   Bergerac      24037     Masculin         Esteban           1 2018
+## 61   Bergerac      24037     Masculin         Estéban           1 2018
+## 62   Bergerac      24037     Masculin           Ethan           1 2018
+## 63   Bergerac      24037     Masculin           Éthan           1 2018
+## 64   Bergerac      24037     Masculin            Evan           2 2018
+## 65   Bergerac      24037     Masculin        Ezéchiel           1 2018
+## 66   Bergerac      24037     Masculin           Ézéli           1 2018
+## 67   Bergerac      24037     Masculin         Falilou           1 2018
+## 68   Bergerac      24037     Masculin           Gabin          10 2018
+## 69   Bergerac      24037     Masculin         Gabriel           4 2018
+## 70   Bergerac      24037     Masculin        Giovanni           1 2018
+## 71   Bergerac      24037     Masculin        Graziano           1 2018
+## 72   Bergerac      24037     Masculin           Hafid           1 2018
+## 73   Bergerac      24037     Masculin          Haroun           1 2018
+## 74   Bergerac      24037     Masculin           Hatim           1 2018
+## 75   Bergerac      24037     Masculin          Hayden           3 2018
+## 76   Bergerac      24037     Masculin          Heyden           1 2018
+## 77   Bergerac      24037     Masculin            Hugo           6 2018
+## 78   Bergerac      24037     Masculin         Ibrahim           1 2018
+## 79   Bergerac      24037     Masculin            Ilan           1 2018
+## 80   Bergerac      24037     Masculin           Ilyan           1 2018
+## 81   Bergerac      24037     Masculin           Imran           3 2018
+## 82   Bergerac      24037     Masculin          Imrane           1 2018
+## 83   Bergerac      24037     Masculin           Isahi           1 2018
+## 84   Bergerac      24037     Masculin          Ismaël           2 2018
+## 85   Bergerac      24037     Masculin            Issa           1 2018
+## 86   Bergerac      24037     Masculin          Isslam           1 2018
+## 87   Bergerac      24037     Masculin            Jack           1 2018
+## 88   Bergerac      24037     Masculin           Jacob           1 2018
+## 89   Bergerac      24037     Masculin         Jacques           1 2018
+## 90   Bergerac      24037     Masculin             Jad           1 2018
+## 91   Bergerac      24037     Masculin           Jamie           1 2018
+## 92   Bergerac      24037     Masculin           Jamil           1 2018
+## 93   Bergerac      24037     Masculin           Jarod           1 2018
+## 94   Bergerac      24037     Masculin            Jean           3 2018
+## 95   Bergerac      24037     Masculin    Jean-raphaël           1 2018
+## 96   Bergerac      24037     Masculin           Jonas           1 2018
+## 97   Bergerac      24037     Masculin           Jules           7 2018
+## 98   Bergerac      24037     Masculin          Julian           2 2018
+## 99   Bergerac      24037     Masculin         Juliane           1 2018
+## 100  Bergerac      24037     Masculin        Julliann           1 2018
+## 101  Bergerac      24037     Masculin            Kaïs           1 2018
+## 102  Bergerac      24037     Masculin           Kalim           1 2018
+## 103  Bergerac      24037     Masculin         Kameron           1 2018
+## 104  Bergerac      24037     Masculin           Kamil           2 2018
+## 105  Bergerac      24037     Masculin          Kayden           1 2018
+## 106  Bergerac      24037     Masculin           Kenzo           2 2018
+## 107  Bergerac      24037     Masculin           Kévan           1 2018
+## 108  Bergerac      24037     Masculin           Kiran           1 2018
+## 109  Bergerac      24037     Masculin         Kyliane           1 2018
+## 110  Bergerac      24037     Masculin         Laurent           1 2018
+## 111  Bergerac      24037     Masculin         Léandre           1 2018
+## 112  Bergerac      24037     Masculin           Lenny           3 2018
+## 113  Bergerac      24037     Masculin             Léo           6 2018
+## 114  Bergerac      24037     Masculin            Léon           1 2018
+## 115  Bergerac      24037     Masculin           Leven           1 2018
+## 116  Bergerac      24037     Masculin            Liam           3 2018
+## 117  Bergerac      24037     Masculin            Lino           1 2018
+## 118  Bergerac      24037     Masculin           Logan           1 2018
+## 119  Bergerac      24037     Masculin         Lorenzo           2 2018
+## 120  Bergerac      24037     Masculin           Louay           1 2018
+## 121  Bergerac      24037     Masculin          Loucas           1 2018
+## 122  Bergerac      24037     Masculin           Louie           1 2018
+## 123  Bergerac      24037     Masculin           Louis           3 2018
+## 124  Bergerac      24037     Masculin         Louison           1 2018
+## 125  Bergerac      24037     Masculin             Luc           1 2018
+## 126  Bergerac      24037     Masculin           Lucas           5 2018
+## 127  Bergerac      24037     Masculin          Lucien           1 2018
+## 128  Bergerac      24037     Masculin           Lucio           1 2018
+## 129  Bergerac      24037     Masculin           Lucka           1 2018
+## 130  Bergerac      24037     Masculin            Luïs           1 2018
+## 131  Bergerac      24037     Masculin            Lyam           2 2018
+## 132  Bergerac      24037     Masculin            Lyès           2 2018
+## 133  Bergerac      24037     Masculin            Lyês           1 2018
+## 134  Bergerac      24037     Masculin           Lyzio           1 2018
+## 135  Bergerac      24037     Masculin             Maé           1 2018
+## 136  Bergerac      24037     Masculin            Maël           6 2018
+## 137  Bergerac      24037     Masculin           Maher           1 2018
+## 138  Bergerac      24037     Masculin            Maho           1 2018
+## 139  Bergerac      24037     Masculin            Malo           2 2018
+## 140  Bergerac      24037     Masculin           Maloé           1 2018
+## 141  Bergerac      24037     Masculin          Malone           2 2018
+## 142  Bergerac      24037     Masculin    Mame-n'diaga           1 2018
+## 143  Bergerac      24037     Masculin           Mando           1 2018
+## 144  Bergerac      24037     Masculin           Manoa           1 2018
+## 145  Bergerac      24037     Masculin           Manoé           1 2018
+## 146  Bergerac      24037     Masculin            Manu           1 2018
+## 147  Bergerac      24037     Masculin             Mao           1 2018
+## 148  Bergerac      24037     Masculin         Marceau           1 2018
+## 149  Bergerac      24037     Masculin          Marcel           1 2018
+## 150  Bergerac      24037     Masculin           Marin           1 2018
+## 151  Bergerac      24037     Masculin          Marius           4 2018
+## 152  Bergerac      24037     Masculin          Marley           2 2018
+## 153  Bergerac      24037     Masculin          Martin           1 2018
+## 154  Bergerac      24037     Masculin          Marvin           1 2018
+## 155  Bergerac      24037     Masculin           Matéo           2 2018
+## 156  Bergerac      24037     Masculin          Mathéo           2 2018
+## 157  Bergerac      24037     Masculin          Mathis           4 2018
+## 158  Bergerac      24037     Masculin          Mathys           5 2018
+## 159  Bergerac      24037     Masculin          Matias           1 2018
+## 160  Bergerac      24037     Masculin            Matt           1 2018
+## 161  Bergerac      24037     Masculin          Matteo           1 2018
+## 162  Bergerac      24037     Masculin         Maxence           1 2018
+## 163  Bergerac      24037     Masculin           Maxim           1 2018
+## 164  Bergerac      24037     Masculin          Maxime           3 2018
+## 165  Bergerac      24037     Masculin          Mayron           2 2018
+## 166  Bergerac      24037     Masculin          Mayson           1 2018
+## 167  Bergerac      24037     Masculin         Maysone           1 2018
+## 168  Bergerac      24037     Masculin           Mehdi           2 2018
+## 169  Bergerac      24037     Masculin          Merlin           1 2018
+## 170  Bergerac      24037     Masculin           Milan           1 2018
+## 171  Bergerac      24037     Masculin            Milo           3 2018
+## 172  Bergerac      24037     Masculin         Mohamed           4 2018
+## 173  Bergerac      24037     Masculin Mohamed-yassine           1 2018
+## 174  Bergerac      24037     Masculin        Moheydîn           1 2018
+## 175  Bergerac      24037     Masculin          Moncef           1 2018
+## 176  Bergerac      24037     Masculin            Naël           2 2018
+## 177  Bergerac      24037     Masculin           Nahel           1 2018
+## 178  Bergerac      24037     Masculin           Nahil           1 2018
+## 179  Bergerac      24037     Masculin           Natan           1 2018
+## 180  Bergerac      24037     Masculin         Nathaël           1 2018
+## 181  Bergerac      24037     Masculin          Nathan           1 2018
+## 182  Bergerac      24037     Masculin       Nathanaël           1 2018
+## 183  Bergerac      24037     Masculin           Nayte           1 2018
+## 184  Bergerac      24037     Masculin         Néoh-zf           1 2018
+## 185  Bergerac      24037     Masculin          Ngolan           1 2018
+## 186  Bergerac      24037     Masculin            Nino           3 2018
+## 187  Bergerac      24037     Masculin             Noa           2 2018
+## 188  Bergerac      24037     Masculin            Noam           1 2018
+## 189  Bergerac      24037     Masculin             Noé           1 2018
+## 190  Bergerac      24037     Masculin          Nohlan           1 2018
+## 191  Bergerac      24037     Masculin           Nolan           1 2018
+## 192  Bergerac      24037     Masculin          Nyhlan           1 2018
+## 193  Bergerac      24037     Masculin            Odah           1 2018
+## 194  Bergerac      24037     Masculin           Oscar           3 2018
+## 195  Bergerac      24037     Masculin            Paul           2 2018
+## 196  Bergerac      24037     Masculin          Pierre           2 2018
+## 197  Bergerac      24037     Masculin          Rafael           2 2018
+## 198  Bergerac      24037     Masculin        Raffaele           1 2018
+## 199  Bergerac      24037     Masculin         Raphaël           6 2018
+## 200  Bergerac      24037     Masculin            Ravi           1 2018
+## 201  Bergerac      24037     Masculin           Rayan           2 2018
+## 202  Bergerac      24037     Masculin          Rayane           1 2018
+## 203  Bergerac      24037     Masculin           Ricky           1 2018
+## 204  Bergerac      24037     Masculin           Robin           2 2018
+## 205  Bergerac      24037     Masculin          Romain           1 2018
+## 206  Bergerac      24037     Masculin           Roméo           2 2018
+## 207  Bergerac      24037     Masculin          Rubben           1 2018
+## 208  Bergerac      24037     Masculin           Ruben           1 2018
+## 209  Bergerac      24037     Masculin            Ryad           1 2018
+## 210  Bergerac      24037     Masculin           Sacha           4 2018
+## 211  Bergerac      24037     Masculin           Salim           1 2018
+## 212  Bergerac      24037     Masculin          Saliou           1 2018
+## 213  Bergerac      24037     Masculin          Samuel           2 2018
+## 214  Bergerac      24037     Masculin            Samy           1 2018
+## 215  Bergerac      24037     Masculin          Sandro           1 2018
+## 216  Bergerac      24037     Masculin       Sebastian           1 2018
+## 217  Bergerac      24037     Masculin       Sébastien           1 2018
+## 218  Bergerac      24037     Masculin          Serage           1 2018
+## 219  Bergerac      24037     Masculin           Simon           1 2018
+## 220  Bergerac      24037     Masculin            Soan           1 2018
+## 221  Bergerac      24037     Masculin           Soann           2 2018
+## 222  Bergerac      24037     Masculin           Sohan           4 2018
+## 223  Bergerac      24037     Masculin           Solan           1 2018
+## 224  Bergerac      24037     Masculin           Soyan           1 2018
+## 225  Bergerac      24037     Masculin             Tao           1 2018
+## 226  Bergerac      24037     Masculin             Téo           1 2018
+## 227  Bergerac      24037     Masculin           Thaïs           1 2018
+## 228  Bergerac      24037     Masculin            Thao           1 2018
+## 229  Bergerac      24037     Masculin          Thélio           1 2018
+## 230  Bergerac      24037     Masculin            Théo           2 2018
+## 231  Bergerac      24037     Masculin          Thiago           2 2018
+## 232  Bergerac      24037     Masculin          Thilio           1 2018
+## 233  Bergerac      24037     Masculin           Tiago           2 2018
+## 234  Bergerac      24037     Masculin           Tiego           1 2018
+## 235  Bergerac      24037     Masculin           Timéo           6 2018
+## 236  Bergerac      24037     Masculin          Timhéo           1 2018
+## 237  Bergerac      24037     Masculin             Tom           5 2018
+## 238  Bergerac      24037     Masculin           Tomàs           2 2018
+## 239  Bergerac      24037     Masculin            Tony           1 2018
+## 240  Bergerac      24037     Masculin        Valentin           2 2018
+## 241  Bergerac      24037     Masculin       Valentino           1 2018
+## 242  Bergerac      24037     Masculin         Vicente           1 2018
+## 243  Bergerac      24037     Masculin          Victor           3 2018
+## 244  Bergerac      24037     Masculin        Vincenzo           1 2018
+## 245  Bergerac      24037     Masculin          Wassim           2 2018
+## 246  Bergerac      24037     Masculin          Willow           1 2018
+## 247  Bergerac      24037     Masculin           Wyatt           2 2018
+## 248  Bergerac      24037     Masculin          Yacine           1 2018
+## 249  Bergerac      24037     Masculin            Yaël           1 2018
+## 250  Bergerac      24037     Masculin           Yanis           4 2018
+## 251  Bergerac      24037     Masculin            Yann           1 2018
+## 252  Bergerac      24037     Masculin          Yannis           1 2018
+## 253  Bergerac      24037     Masculin         Yassine           1 2018
+## 254  Bergerac      24037     Masculin          Younes           1 2018
+## 255  Bergerac      24037     Masculin             Zef           1 2018
+## 256  Bergerac      24037     Masculin           Ziyad           1 2018
+## 257  Bergerac      24037     Masculin           Zoran           1 2018
+```
+
+
+---
+
+### Filter() : to focus on specific groups 2/2
+
+
+You can select based on contiunous values :
+
+```r
+dplyr::filter(firstnames, occurrences &gt; 3)
+```
+
+```
+##    city_name insee_code child_gender child_1stname occurrences year
+## 1   Bergerac      24037     Masculin         Aaron           4 2018
+## 2   Bergerac      24037      Féminin         Ambre           6 2018
+## 3   Bergerac      24037     Masculin       Antonin           4 2018
+## 4   Bergerac      24037     Masculin        Arthur           8 2018
+## 5   Bergerac      24037      Féminin         Chloé           4 2018
+## 6   Bergerac      24037     Masculin          Eden           4 2018
+## 7   Bergerac      24037     Masculin         Gabin          10 2018
+## 8   Bergerac      24037     Masculin       Gabriel           4 2018
+## 9   Bergerac      24037     Masculin          Hugo           6 2018
+## 10  Bergerac      24037      Féminin          Jade           5 2018
+## 11  Bergerac      24037     Masculin         Jules           7 2018
+## 12  Bergerac      24037      Féminin         Julia           4 2018
+## 13  Bergerac      24037      Féminin           Léa           5 2018
+## 14  Bergerac      24037     Masculin           Léo           6 2018
+## 15  Bergerac      24037      Féminin          Lola           4 2018
+## 16  Bergerac      24037      Féminin        Louise           7 2018
+## 17  Bergerac      24037     Masculin         Lucas           5 2018
+## 18  Bergerac      24037     Masculin          Maël           6 2018
+## 19  Bergerac      24037     Masculin        Marius           4 2018
+## 20  Bergerac      24037     Masculin        Mathis           4 2018
+## 21  Bergerac      24037     Masculin        Mathys           5 2018
+## 22  Bergerac      24037     Masculin       Mohamed           4 2018
+## 23  Bergerac      24037      Féminin           Mya           4 2018
+## 24  Bergerac      24037     Masculin       Raphaël           6 2018
+## 25  Bergerac      24037     Masculin         Sacha           4 2018
+## 26  Bergerac      24037     Masculin         Sohan           4 2018
+## 27  Bergerac      24037      Féminin          Théa           5 2018
+## 28  Bergerac      24037     Masculin         Timéo           6 2018
+## 29  Bergerac      24037     Masculin           Tom           5 2018
+## 30  Bergerac      24037     Masculin         Yanis           4 2018
+```
+
+---
+
+### Select() : to focus on specific variables 1/2
+
+`select()` allows you to drop or keep variables from a dataset by listing their index or name.
+
+There are two main advantages :
+* a "narrower" dataset is easier to read ;
+* a "lighter" dataset is faster to compute.
+
+To choose what to drop, go for the fat, the redundant and the useless.
+
+In the first nam dataset case, all observations have the same value for the city (*"Bergerac"*)* and, consequently, the same for the citycode. As we only use 2018 data, the value of year stays consistant across the dataset. Hence, expandable.
+
+You can do the selection two ways : declaring what you keep or listing what you drop. Let's do this by quality first :
+
+
+```r
+dplyr::select(firstnames, child_gender, child_1stname, occurrences)
+```
+
+```
+##     child_gender   child_1stname occurrences
+## 1       Masculin           Aaron           4
+## 2        Féminin      Abbygaëlle           1
+## 3       Masculin      Abdeljalil           1
+## 4        Féminin         Abigail           1
+## 5       Masculin         Achille           2
+## 6       Masculin            Adam           1
+## 7        Féminin           Adèle           1
+## 8       Masculin            Adem           1
+## 9        Féminin         Adriana           1
+## 10       Féminin          Agathe           1
+## 11      Masculin            Aimé           1
+## 12       Féminin            Aïna           1
+## 13      Masculin          Alaric           1
+## 14      Masculin           Alban           2
+## 15       Féminin         Alessia           1
+## 16       Féminin       Alexandra           1
+## 17      Masculin       Alexandre           1
+## 18       Féminin          Alexia           1
+## 19      Masculin           Alexy           1
+## 20      Masculin             Ali           1
+## 21       Féminin           Alice           2
+## 22       Féminin          Alicia           2
+## 23       Féminin           Aliha           1
+## 24       Féminin            Alix           3
+## 25       Féminin           Aliya           1
+## 26       Féminin          Aliyah           1
+## 27       Féminin            Ally           1
+## 28      Masculin     Alpha-oumar           1
+## 29      Masculin          Altaïr           1
+## 30       Féminin            Alya           1
+## 31      Masculin          Alyael           1
+## 32       Féminin          Alyana           1
+## 33       Féminin           Alyce           1
+## 34       Féminin          Alycia           2
+## 35       Féminin          Alyssa           1
+## 36      Masculin          Amaury           2
+## 37       Féminin           Ambre           6
+## 38      Masculin            Amin           1
+## 39      Masculin            Amir           3
+## 40       Féminin             Ana           2
+## 41       Féminin            Anaë           1
+## 42       Féminin         Anaëlle           2
+## 43       Féminin           Anaïa           1
+## 44      Masculin            Anas           1
+## 45      Masculin          Andréa           1
+## 46       Féminin          Andréa           1
+## 47       Féminin         Andreea           1
+## 48      Masculin            Anes           1
+## 49      Masculin          Angelo           1
+## 50       Féminin            Anna           2
+## 51       Féminin       Anna-rose           1
+## 52      Masculin         Anthony           1
+## 53      Masculin         Antoine           2
+## 54      Masculin         Antonin           4
+## 55       Féminin            Aria           3
+## 56      Masculin          Arnaud           1
+## 57      Masculin          Arsène           1
+## 58      Masculin          Arthur           8
+## 59       Féminin            Arwa           1
+## 60       Féminin           Assia           1
+## 61       Féminin        Athénaïs           1
+## 62      Masculin           Aubin           1
+## 63      Masculin        Augustin           1
+## 64      Masculin         Auxence           1
+## 65       Féminin             Avä           1
+## 66      Masculin            Axel           2
+## 67      Masculin           Ayden           1
+## 68       Féminin          Ayline           1
+## 69      Masculin           Ayoub           2
+## 70       Féminin         Azaliah           1
+## 71       Féminin           Aziel           1
+## 72       Féminin          Azilys           1
+## 73       Féminin            Azza           1
+## 74      Masculin        Baptiste           2
+## 75      Masculin            Beau           1
+## 76       Féminin          Bianca           1
+## 77      Masculin           Bilel           1
+## 78       Féminin            Blue           1
+## 79       Féminin         Bryanna           1
+## 80       Féminin           Calie           3
+## 81      Masculin         Cameron           1
+## 82      Masculin         Camille           1
+## 83       Féminin         Camille           1
+## 84       Féminin        Capucine           3
+## 85       Féminin           Carla           1
+## 86       Féminin        Carolina           1
+## 87       Féminin        Catalina           1
+## 88      Masculin          Cédric           1
+## 89       Féminin         Céleste           2
+## 90       Féminin           Célia           1
+## 91      Masculin          Célian           1
+## 92       Féminin         Chamina           1
+## 93       Féminin         Charlie           1
+## 94       Féminin        Charline           2
+## 95       Féminin       Charlotte           1
+## 96      Masculin          Charly           2
+## 97       Féminin        Cheyenne           1
+## 98       Féminin           Chloé           4
+## 99       Féminin           Circé           1
+## 100      Féminin          Claire           1
+## 101      Féminin           Clara           1
+## 102      Féminin        Clémence           2
+## 103     Masculin         Clément           1
+## 104      Féminin      Clémentine           1
+## 105      Féminin            Cléo           1
+## 106     Masculin           David           1
+## 107      Féminin         Déborah           1
+## 108     Masculin           Délio           1
+## 109      Féminin           Diane           2
+## 110      Féminin            Dina           1
+## 111     Masculin         Djibril           2
+## 112      Féminin           Douaa           1
+## 113     Masculin            Eden           4
+## 114      Féminin            Eden           1
+## 115     Masculin           Edzio           1
+## 116      Féminin            Elea           1
+## 117      Féminin            Eléa           1
+## 118      Féminin           Elena           1
+## 119      Féminin           Eléna           2
+## 120      Féminin        Eléonore           1
+## 121      Féminin            Elia           1
+## 122     Masculin            Elie           1
+## 123     Masculin            Élie           1
+## 124     Masculin          Elijah           1
+## 125      Féminin          Élinor           1
+## 126     Masculin            Elio           1
+## 127     Masculin          Eliott           1
+## 128      Féminin           Elise           2
+## 129      Féminin           Élise           1
+## 130      Féminin            Ella           1
+## 131      Féminin           Elley           1
+## 132      Féminin            Elsa           1
+## 133     Masculin           Elvyn           1
+## 134      Féminin            Élya           1
+## 135      Féminin           Elyna           1
+## 136     Masculin            Elyo           1
+## 137     Masculin            Élyo           1
+## 138     Masculin           Émile           1
+## 139      Féminin          Émilie           1
+## 140     Masculin          Émilio           1
+## 141      Féminin            Emma           2
+## 142     Masculin        Emmanuel           2
+## 143      Féminin            Emmy           1
+## 144      Féminin             Emy           2
+## 145      Féminin            Enéa           1
+## 146     Masculin            Enzo           1
+## 147      Féminin           Esraa           1
+## 148     Masculin         Esteban           1
+## 149     Masculin         Estéban           1
+## 150      Féminin         Estelle           1
+## 151     Masculin           Ethan           1
+## 152     Masculin           Éthan           1
+## 153      Féminin             Eva           1
+## 154     Masculin            Evan           2
+## 155      Féminin             Evy           1
+## 156     Masculin        Ezéchiel           1
+## 157     Masculin           Ézéli           1
+## 158     Masculin         Falilou           1
+## 159      Féminin           Fanny           1
+## 160      Féminin          Flavie           1
+## 161     Masculin           Gabin          10
+## 162     Masculin         Gabriel           4
+## 163      Féminin       Gabrielle           2
+## 164     Masculin        Giovanni           1
+## 165      Féminin        Giulyana           1
+## 166     Masculin        Graziano           1
+## 167     Masculin           Hafid           1
+## 168      Féminin           Hanaé           1
+## 169      Féminin          Harley           1
+## 170     Masculin          Haroun           1
+## 171     Masculin           Hatim           1
+## 172     Masculin          Hayden           3
+## 173      Féminin         Héloïse           1
+## 174     Masculin          Heyden           1
+## 175      Féminin           Hoana           1
+## 176     Masculin            Hugo           6
+## 177     Masculin         Ibrahim           1
+## 178     Masculin            Ilan           1
+## 179      Féminin           Ilaya           1
+## 180      Féminin          Iléana           1
+## 181      Féminin          Iliana           1
+## 182      Féminin         Illyana           1
+## 183     Masculin           Ilyan           1
+## 184      Féminin           Imène           1
+## 185     Masculin           Imran           3
+## 186     Masculin          Imrane           1
+## 187      Féminin           Inaya           2
+## 188      Féminin            Ines           3
+## 189      Féminin            Inès           1
+## 190      Féminin           Iniya           1
+## 191      Féminin            Iris           1
+## 192     Masculin           Isahi           1
+## 193     Masculin          Ismaël           2
+## 194     Masculin            Issa           1
+## 195     Masculin          Isslam           1
+## 196      Féminin        Jacinthe           1
+## 197     Masculin            Jack           1
+## 198     Masculin           Jacob           1
+## 199     Masculin         Jacques           1
+## 200     Masculin             Jad           1
+## 201      Féminin            Jade           5
+## 202     Masculin           Jamie           1
+## 203     Masculin           Jamil           1
+## 204      Féminin            Jane           1
+## 205     Masculin           Jarod           1
+## 206      Féminin            Jazz           1
+## 207     Masculin            Jean           3
+## 208      Féminin          Jeanne           2
+## 209     Masculin    Jean-raphaël           1
+## 210      Féminin         Jessica           1
+## 211      Féminin          Jolyne           1
+## 212     Masculin           Jonas           1
+## 213      Féminin           Joyce           1
+## 214      Féminin          Judith           1
+## 215      Féminin            Judy           1
+## 216     Masculin           Jules           7
+## 217      Féminin           Julia           4
+## 218     Masculin          Julian           2
+## 219     Masculin         Juliane           1
+## 220      Féminin           Julie           1
+## 221      Féminin        Juliette           1
+## 222     Masculin        Julliann           1
+## 223      Féminin         Julyana           2
+## 224      Féminin         Justine           1
+## 225      Féminin         Kahlane           1
+## 226     Masculin            Kaïs           1
+## 227      Féminin        Kalheesi           1
+## 228     Masculin           Kalim           1
+## 229     Masculin         Kameron           1
+## 230     Masculin           Kamil           2
+## 231      Féminin          Kamila           1
+## 232      Féminin        Katalyna           1
+## 233      Féminin          Katlyn           1
+## 234     Masculin          Kayden           1
+## 235      Féminin           Kayla           1
+## 236      Féminin           Kélia           2
+## 237      Féminin           Kelis           1
+## 238      Féminin         Kélissa           1
+## 239      Féminin         Kenessy           1
+## 240     Masculin           Kenzo           2
+## 241     Masculin           Kévan           1
+## 242     Masculin           Kiran           1
+## 243      Féminin           Kyley           1
+## 244     Masculin         Kyliane           1
+## 245      Féminin           Lahna           1
+## 246      Féminin            Laïa           1
+## 247      Féminin            Lara           1
+## 248     Masculin         Laurent           1
+## 249      Féminin             Léa           5
+## 250      Féminin           Léana           1
+## 251     Masculin         Léandre           1
+## 252      Féminin           Léane           1
+## 253      Féminin          Leanna           1
+## 254      Féminin          Leeloo           1
+## 255      Féminin           Lehna           1
+## 256      Féminin           Leïla           1
+## 257      Féminin            Léna           2
+## 258     Masculin           Lenny           3
+## 259     Masculin             Léo           6
+## 260     Masculin            Léon           1
+## 261      Féminin           Lesia           1
+## 262     Masculin           Leven           1
+## 263     Masculin            Liam           3
+## 264      Féminin       Lila-rose           1
+## 265      Féminin           Liloé           1
+## 266      Féminin           Lilou           1
+## 267      Féminin           Lilya           1
+## 268      Féminin            Lina           2
+## 269      Féminin          Linaya           1
+## 270      Féminin         Lindsay           1
+## 271      Féminin         Lindsey           1
+## 272      Féminin            Line           1
+## 273      Féminin           Linna           1
+## 274     Masculin            Lino           1
+## 275      Féminin           Liris           1
+## 276      Féminin           Livia           1
+## 277     Masculin           Logan           1
+## 278      Féminin            Lola           4
+## 279     Masculin         Lorenzo           2
+## 280      Féminin             Lou           2
+## 281      Féminin          Louane           1
+## 282     Masculin           Louay           1
+## 283     Masculin          Loucas           1
+## 284     Masculin           Louie           1
+## 285     Masculin           Louis           3
+## 286      Féminin          Louisa           1
+## 287      Féminin          Louise           7
+## 288     Masculin         Louison           1
+## 289     Masculin             Luc           1
+## 290     Masculin           Lucas           5
+## 291      Féminin            Luce           1
+## 292      Féminin           Lucie           2
+## 293     Masculin          Lucien           1
+## 294     Masculin           Lucio           1
+## 295     Masculin           Lucka           1
+## 296      Féminin            Lucy           1
+## 297     Masculin            Luïs           1
+## 298      Féminin             Lya           2
+## 299      Féminin            Lyah           1
+## 300     Masculin            Lyam           2
+## 301      Féminin          Ly-ana           1
+## 302     Masculin            Lyès           2
+## 303     Masculin            Lyês           1
+## 304      Féminin           Lylou           1
+## 305      Féminin            Lyna           3
+## 306      Féminin            Lynn           1
+## 307     Masculin           Lyzio           1
+## 308      Féminin           Maddy           3
+## 309      Féminin       Madeleine           1
+## 310     Masculin             Maé           1
+## 311     Masculin            Maël           6
+## 312      Féminin          Maëlys           1
+## 313      Féminin           Mahau           1
+## 314     Masculin           Maher           1
+## 315     Masculin            Maho           1
+## 316      Féminin         Maliwan           1
+## 317     Masculin            Malo           2
+## 318     Masculin           Maloé           1
+## 319      Féminin           Maloë           1
+## 320     Masculin          Malone           2
+## 321      Féminin          Malone           1
+## 322     Masculin    Mame-n'diaga           1
+## 323     Masculin           Mando           1
+## 324     Masculin           Manoa           1
+## 325      Féminin           Manoa           1
+## 326     Masculin           Manoé           1
+## 327      Féminin           Manon           1
+## 328     Masculin            Manu           1
+## 329     Masculin             Mao           1
+## 330     Masculin         Marceau           1
+## 331     Masculin          Marcel           1
+## 332      Féminin       Marceline           1
+## 333      Féminin           Maria           1
+## 334      Féminin           Marie           1
+## 335      Féminin    Marie-amélie           1
+## 336     Masculin           Marin           1
+## 337     Masculin          Marius           4
+## 338     Masculin          Marley           2
+## 339      Féminin           Marta           1
+## 340      Féminin          Martha           1
+## 341     Masculin          Martin           1
+## 342     Masculin          Marvin           1
+## 343      Féminin           Marwa           1
+## 344      Féminin          Maryam           1
+## 345     Masculin           Matéo           2
+## 346     Masculin          Mathéo           2
+## 347      Féminin        Mathilde           1
+## 348     Masculin          Mathis           4
+## 349     Masculin          Mathys           5
+## 350     Masculin          Matias           1
+## 351     Masculin            Matt           1
+## 352     Masculin          Matteo           1
+## 353      Féminin         Maxance           1
+## 354     Masculin         Maxence           1
+## 355     Masculin           Maxim           1
+## 356     Masculin          Maxime           3
+## 357      Féminin          Mayana           1
+## 358      Féminin          Maylan           1
+## 359     Masculin          Mayron           2
+## 360     Masculin          Mayson           1
+## 361     Masculin         Maysone           1
+## 362      Féminin         Mayssae           1
+## 363     Masculin           Mehdi           2
+## 364      Féminin          Mélody           2
+## 365     Masculin          Merlin           1
+## 366      Féminin           Meryl           1
+## 367      Féminin             Mia           1
+## 368      Féminin            Mïla           1
+## 369     Masculin           Milan           1
+## 370      Féminin           Milia           1
+## 371     Masculin            Milo           3
+## 372      Féminin          Minori           1
+## 373     Masculin         Mohamed           4
+## 374     Masculin Mohamed-yassine           1
+## 375     Masculin        Moheydîn           1
+## 376     Masculin          Moncef           1
+## 377      Féminin             Mya           4
+## 378     Masculin            Naël           2
+## 379      Féminin           Naëly           1
+## 380     Masculin           Nahel           1
+## 381     Masculin           Nahil           1
+## 382      Féminin           Naomi           2
+## 383      Féminin          Naomie           1
+## 384     Masculin           Natan           1
+## 385     Masculin         Nathaël           1
+## 386     Masculin          Nathan           1
+## 387     Masculin       Nathanaël           1
+## 388      Féminin           Nayah           1
+## 389     Masculin           Nayte           1
+## 390      Féminin            Nell           1
+## 391      Féminin           Nelle           1
+## 392     Masculin         Néoh-zf           1
+## 393     Masculin          Ngolan           1
+## 394      Féminin           Nihen           1
+## 395      Féminin            Nina           1
+## 396     Masculin            Nino           3
+## 397     Masculin             Noa           2
+## 398     Masculin            Noam           1
+## 399     Masculin             Noé           1
+## 400      Féminin           Noémy           1
+## 401     Masculin          Nohlan           1
+## 402     Masculin           Nolan           1
+## 403      Féminin           Norah           2
+## 404      Féminin         Norhane           1
+## 405      Féminin            Nour           1
+## 406     Masculin          Nyhlan           1
+## 407      Féminin            Nyla           1
+## 408      Féminin          Océane           1
+## 409      Féminin         Océanne           1
+## 410     Masculin            Odah           1
+## 411      Féminin          Olivia           1
+## 412     Masculin           Oscar           3
+## 413      Féminin           Oyana           1
+## 414      Féminin          Paloma           1
+## 415      Féminin           Paola           1
+## 416     Masculin            Paul           2
+## 417      Féminin         Paulyne           1
+## 418      Féminin          Peyton           1
+## 419     Masculin          Pierre           2
+## 420     Masculin          Rafael           2
+## 421     Masculin        Raffaele           1
+## 422     Masculin         Raphaël           6
+## 423      Féminin       Raphaëlle           1
+## 424     Masculin            Ravi           1
+## 425     Masculin           Rayan           2
+## 426     Masculin          Rayane           1
+## 427     Masculin           Ricky           1
+## 428      Féminin         Rihanna           1
+## 429      Féminin            Rïme           1
+## 430      Féminin            Rita           1
+## 431      Féminin           Ritej           1
+## 432     Masculin           Robin           2
+## 433     Masculin          Romain           1
+## 434      Féminin          Romane           1
+## 435     Masculin           Roméo           2
+## 436      Féminin            Romy           2
+## 437      Féminin            Rose           1
+## 438     Masculin          Rubben           1
+## 439     Masculin           Ruben           1
+## 440     Masculin            Ryad           1
+## 441     Masculin           Sacha           4
+## 442     Masculin           Salim           1
+## 443     Masculin          Saliou           1
+## 444      Féminin          Samira           2
+## 445     Masculin          Samuel           2
+## 446     Masculin            Samy           1
+## 447     Masculin          Sandro           1
+## 448      Féminin           Sarah           1
+## 449     Masculin       Sebastian           1
+## 450     Masculin       Sébastien           1
+## 451      Féminin          Séléna           1
+## 452     Masculin          Serage           1
+## 453      Féminin           Shaya           1
+## 454      Féminin          Shelsy           1
+## 455      Féminin          Sheryl           1
+## 456      Féminin         Shéryne           1
+## 457     Masculin           Simon           1
+## 458     Masculin            Soan           1
+## 459     Masculin           Soann           2
+## 460      Féminin           Sofia           1
+## 461     Masculin           Sohan           4
+## 462     Masculin           Solan           1
+## 463      Féminin         Solenne           1
+## 464      Féminin          Soline           2
+## 465      Féminin          Sophie           2
+## 466      Féminin       Soundouss           1
+## 467     Masculin           Soyan           1
+## 468      Féminin          Tahiss           1
+## 469      Féminin           Taïna           1
+## 470      Féminin           Talya           1
+## 471     Masculin             Tao           1
+## 472      Féminin           Telya           1
+## 473      Féminin       Tennessee           1
+## 474     Masculin             Téo           1
+## 475     Masculin           Thaïs           1
+## 476      Féminin           Thaïs           2
+## 477     Masculin            Thao           1
+## 478      Féminin            Théa           5
+## 479     Masculin          Thélio           1
+## 480     Masculin            Théo           2
+## 481     Masculin          Thiago           2
+## 482     Masculin          Thilio           1
+## 483     Masculin           Tiago           2
+## 484     Masculin           Tiego           1
+## 485      Féminin           Timéa           1
+## 486     Masculin           Timéo           6
+## 487     Masculin          Timhéo           1
+## 488     Masculin             Tom           5
+## 489     Masculin           Tomàs           2
+## 490     Masculin            Tony           1
+## 491      Féminin          Tyanna           1
+## 492     Masculin        Valentin           2
+## 493      Féminin       Valentine           1
+## 494     Masculin       Valentino           1
+## 495     Masculin         Vicente           1
+## 496      Féminin        Victoire           1
+## 497     Masculin          Victor           3
+## 498     Masculin        Vincenzo           1
+## 499     Masculin          Wassim           2
+## 500      Féminin         Wijdane           1
+## 501      Féminin         Wijdene           1
+## 502     Masculin          Willow           1
+## 503     Masculin           Wyatt           2
+## 504     Masculin          Yacine           1
+## 505     Masculin            Yaël           1
+## 506     Masculin           Yanis           4
+## 507     Masculin            Yann           1
+## 508     Masculin          Yannis           1
+## 509      Féminin         Yasmina           1
+## 510     Masculin         Yassine           1
+## 511      Féminin           Yeliz           1
+## 512      Féminin           Ynaïa           1
+## 513     Masculin          Younes           1
+## 514      Féminin           Yvana           1
+## 515      Féminin           Zahra           2
+## 516      Féminin           Zayna           1
+## 517      Féminin          Zaynab           1
+## 518     Masculin             Zef           1
+## 519      Féminin           Zélie           1
+## 520     Masculin           Ziyad           1
+## 521      Féminin             Zoé           1
+## 522      Féminin            Zola           1
+## 523     Masculin           Zoran           1
+```
+
+
+---
+
+### Select() : to focus on specific variables 2/2
+
+We can also do it by listing what we want to remove from the dataset and putting a minus sign in front of each.
+
+You can do it variable by variable but it can be a little tidious and sloppy. To make it more readable and easy to handle, we can use a vector listing the name of the variables we want to get rid of. Then, to *"unselect"* them, we add them as the 2d argument for `select()` with an opening minus sign :
+
+
+```r
+letgo &lt;- c("city_name","insee_code","year")
+
+# to avoid a warning, we put our vector in the all_of() function :
+# the result is the same as the previous one
+
+f &lt;- dplyr::select(firstnames, -all_of(letgo))
+```
+
+
+---
+
+### Mutate() : to create the variables we need
+
+`mutate()` is used to create extra variable we may need.
+
+You can give it a fixed value but the most useful thing to do is assigning it an operation that will make an operation out of the other variables.
+
+For example : we can 
+
+
+```r
+dplyr::mutate(f, share = occurrences/(sum(firstnames$occurrences))*100)
+```
+
+```
+##     child_gender   child_1stname occurrences     share
+## 1       Masculin           Aaron           4 0.5263158
+## 2        Féminin      Abbygaëlle           1 0.1315789
+## 3       Masculin      Abdeljalil           1 0.1315789
+## 4        Féminin         Abigail           1 0.1315789
+## 5       Masculin         Achille           2 0.2631579
+## 6       Masculin            Adam           1 0.1315789
+## 7        Féminin           Adèle           1 0.1315789
+## 8       Masculin            Adem           1 0.1315789
+## 9        Féminin         Adriana           1 0.1315789
+## 10       Féminin          Agathe           1 0.1315789
+## 11      Masculin            Aimé           1 0.1315789
+## 12       Féminin            Aïna           1 0.1315789
+## 13      Masculin          Alaric           1 0.1315789
+## 14      Masculin           Alban           2 0.2631579
+## 15       Féminin         Alessia           1 0.1315789
+## 16       Féminin       Alexandra           1 0.1315789
+## 17      Masculin       Alexandre           1 0.1315789
+## 18       Féminin          Alexia           1 0.1315789
+## 19      Masculin           Alexy           1 0.1315789
+## 20      Masculin             Ali           1 0.1315789
+## 21       Féminin           Alice           2 0.2631579
+## 22       Féminin          Alicia           2 0.2631579
+## 23       Féminin           Aliha           1 0.1315789
+## 24       Féminin            Alix           3 0.3947368
+## 25       Féminin           Aliya           1 0.1315789
+## 26       Féminin          Aliyah           1 0.1315789
+## 27       Féminin            Ally           1 0.1315789
+## 28      Masculin     Alpha-oumar           1 0.1315789
+## 29      Masculin          Altaïr           1 0.1315789
+## 30       Féminin            Alya           1 0.1315789
+## 31      Masculin          Alyael           1 0.1315789
+## 32       Féminin          Alyana           1 0.1315789
+## 33       Féminin           Alyce           1 0.1315789
+## 34       Féminin          Alycia           2 0.2631579
+## 35       Féminin          Alyssa           1 0.1315789
+## 36      Masculin          Amaury           2 0.2631579
+## 37       Féminin           Ambre           6 0.7894737
+## 38      Masculin            Amin           1 0.1315789
+## 39      Masculin            Amir           3 0.3947368
+## 40       Féminin             Ana           2 0.2631579
+## 41       Féminin            Anaë           1 0.1315789
+## 42       Féminin         Anaëlle           2 0.2631579
+## 43       Féminin           Anaïa           1 0.1315789
+## 44      Masculin            Anas           1 0.1315789
+## 45      Masculin          Andréa           1 0.1315789
+## 46       Féminin          Andréa           1 0.1315789
+## 47       Féminin         Andreea           1 0.1315789
+## 48      Masculin            Anes           1 0.1315789
+## 49      Masculin          Angelo           1 0.1315789
+## 50       Féminin            Anna           2 0.2631579
+## 51       Féminin       Anna-rose           1 0.1315789
+## 52      Masculin         Anthony           1 0.1315789
+## 53      Masculin         Antoine           2 0.2631579
+## 54      Masculin         Antonin           4 0.5263158
+## 55       Féminin            Aria           3 0.3947368
+## 56      Masculin          Arnaud           1 0.1315789
+## 57      Masculin          Arsène           1 0.1315789
+## 58      Masculin          Arthur           8 1.0526316
+## 59       Féminin            Arwa           1 0.1315789
+## 60       Féminin           Assia           1 0.1315789
+## 61       Féminin        Athénaïs           1 0.1315789
+## 62      Masculin           Aubin           1 0.1315789
+## 63      Masculin        Augustin           1 0.1315789
+## 64      Masculin         Auxence           1 0.1315789
+## 65       Féminin             Avä           1 0.1315789
+## 66      Masculin            Axel           2 0.2631579
+## 67      Masculin           Ayden           1 0.1315789
+## 68       Féminin          Ayline           1 0.1315789
+## 69      Masculin           Ayoub           2 0.2631579
+## 70       Féminin         Azaliah           1 0.1315789
+## 71       Féminin           Aziel           1 0.1315789
+## 72       Féminin          Azilys           1 0.1315789
+## 73       Féminin            Azza           1 0.1315789
+## 74      Masculin        Baptiste           2 0.2631579
+## 75      Masculin            Beau           1 0.1315789
+## 76       Féminin          Bianca           1 0.1315789
+## 77      Masculin           Bilel           1 0.1315789
+## 78       Féminin            Blue           1 0.1315789
+## 79       Féminin         Bryanna           1 0.1315789
+## 80       Féminin           Calie           3 0.3947368
+## 81      Masculin         Cameron           1 0.1315789
+## 82      Masculin         Camille           1 0.1315789
+## 83       Féminin         Camille           1 0.1315789
+## 84       Féminin        Capucine           3 0.3947368
+## 85       Féminin           Carla           1 0.1315789
+## 86       Féminin        Carolina           1 0.1315789
+## 87       Féminin        Catalina           1 0.1315789
+## 88      Masculin          Cédric           1 0.1315789
+## 89       Féminin         Céleste           2 0.2631579
+## 90       Féminin           Célia           1 0.1315789
+## 91      Masculin          Célian           1 0.1315789
+## 92       Féminin         Chamina           1 0.1315789
+## 93       Féminin         Charlie           1 0.1315789
+## 94       Féminin        Charline           2 0.2631579
+## 95       Féminin       Charlotte           1 0.1315789
+## 96      Masculin          Charly           2 0.2631579
+## 97       Féminin        Cheyenne           1 0.1315789
+## 98       Féminin           Chloé           4 0.5263158
+## 99       Féminin           Circé           1 0.1315789
+## 100      Féminin          Claire           1 0.1315789
+## 101      Féminin           Clara           1 0.1315789
+## 102      Féminin        Clémence           2 0.2631579
+## 103     Masculin         Clément           1 0.1315789
+## 104      Féminin      Clémentine           1 0.1315789
+## 105      Féminin            Cléo           1 0.1315789
+## 106     Masculin           David           1 0.1315789
+## 107      Féminin         Déborah           1 0.1315789
+## 108     Masculin           Délio           1 0.1315789
+## 109      Féminin           Diane           2 0.2631579
+## 110      Féminin            Dina           1 0.1315789
+## 111     Masculin         Djibril           2 0.2631579
+## 112      Féminin           Douaa           1 0.1315789
+## 113     Masculin            Eden           4 0.5263158
+## 114      Féminin            Eden           1 0.1315789
+## 115     Masculin           Edzio           1 0.1315789
+## 116      Féminin            Elea           1 0.1315789
+## 117      Féminin            Eléa           1 0.1315789
+## 118      Féminin           Elena           1 0.1315789
+## 119      Féminin           Eléna           2 0.2631579
+## 120      Féminin        Eléonore           1 0.1315789
+## 121      Féminin            Elia           1 0.1315789
+## 122     Masculin            Elie           1 0.1315789
+## 123     Masculin            Élie           1 0.1315789
+## 124     Masculin          Elijah           1 0.1315789
+## 125      Féminin          Élinor           1 0.1315789
+## 126     Masculin            Elio           1 0.1315789
+## 127     Masculin          Eliott           1 0.1315789
+## 128      Féminin           Elise           2 0.2631579
+## 129      Féminin           Élise           1 0.1315789
+## 130      Féminin            Ella           1 0.1315789
+## 131      Féminin           Elley           1 0.1315789
+## 132      Féminin            Elsa           1 0.1315789
+## 133     Masculin           Elvyn           1 0.1315789
+## 134      Féminin            Élya           1 0.1315789
+## 135      Féminin           Elyna           1 0.1315789
+## 136     Masculin            Elyo           1 0.1315789
+## 137     Masculin            Élyo           1 0.1315789
+## 138     Masculin           Émile           1 0.1315789
+## 139      Féminin          Émilie           1 0.1315789
+## 140     Masculin          Émilio           1 0.1315789
+## 141      Féminin            Emma           2 0.2631579
+## 142     Masculin        Emmanuel           2 0.2631579
+## 143      Féminin            Emmy           1 0.1315789
+## 144      Féminin             Emy           2 0.2631579
+## 145      Féminin            Enéa           1 0.1315789
+## 146     Masculin            Enzo           1 0.1315789
+## 147      Féminin           Esraa           1 0.1315789
+## 148     Masculin         Esteban           1 0.1315789
+## 149     Masculin         Estéban           1 0.1315789
+## 150      Féminin         Estelle           1 0.1315789
+## 151     Masculin           Ethan           1 0.1315789
+## 152     Masculin           Éthan           1 0.1315789
+## 153      Féminin             Eva           1 0.1315789
+## 154     Masculin            Evan           2 0.2631579
+## 155      Féminin             Evy           1 0.1315789
+## 156     Masculin        Ezéchiel           1 0.1315789
+## 157     Masculin           Ézéli           1 0.1315789
+## 158     Masculin         Falilou           1 0.1315789
+## 159      Féminin           Fanny           1 0.1315789
+## 160      Féminin          Flavie           1 0.1315789
+## 161     Masculin           Gabin          10 1.3157895
+## 162     Masculin         Gabriel           4 0.5263158
+## 163      Féminin       Gabrielle           2 0.2631579
+## 164     Masculin        Giovanni           1 0.1315789
+## 165      Féminin        Giulyana           1 0.1315789
+## 166     Masculin        Graziano           1 0.1315789
+## 167     Masculin           Hafid           1 0.1315789
+## 168      Féminin           Hanaé           1 0.1315789
+## 169      Féminin          Harley           1 0.1315789
+## 170     Masculin          Haroun           1 0.1315789
+## 171     Masculin           Hatim           1 0.1315789
+## 172     Masculin          Hayden           3 0.3947368
+## 173      Féminin         Héloïse           1 0.1315789
+## 174     Masculin          Heyden           1 0.1315789
+## 175      Féminin           Hoana           1 0.1315789
+## 176     Masculin            Hugo           6 0.7894737
+## 177     Masculin         Ibrahim           1 0.1315789
+## 178     Masculin            Ilan           1 0.1315789
+## 179      Féminin           Ilaya           1 0.1315789
+## 180      Féminin          Iléana           1 0.1315789
+## 181      Féminin          Iliana           1 0.1315789
+## 182      Féminin         Illyana           1 0.1315789
+## 183     Masculin           Ilyan           1 0.1315789
+## 184      Féminin           Imène           1 0.1315789
+## 185     Masculin           Imran           3 0.3947368
+## 186     Masculin          Imrane           1 0.1315789
+## 187      Féminin           Inaya           2 0.2631579
+## 188      Féminin            Ines           3 0.3947368
+## 189      Féminin            Inès           1 0.1315789
+## 190      Féminin           Iniya           1 0.1315789
+## 191      Féminin            Iris           1 0.1315789
+## 192     Masculin           Isahi           1 0.1315789
+## 193     Masculin          Ismaël           2 0.2631579
+## 194     Masculin            Issa           1 0.1315789
+## 195     Masculin          Isslam           1 0.1315789
+## 196      Féminin        Jacinthe           1 0.1315789
+## 197     Masculin            Jack           1 0.1315789
+## 198     Masculin           Jacob           1 0.1315789
+## 199     Masculin         Jacques           1 0.1315789
+## 200     Masculin             Jad           1 0.1315789
+## 201      Féminin            Jade           5 0.6578947
+## 202     Masculin           Jamie           1 0.1315789
+## 203     Masculin           Jamil           1 0.1315789
+## 204      Féminin            Jane           1 0.1315789
+## 205     Masculin           Jarod           1 0.1315789
+## 206      Féminin            Jazz           1 0.1315789
+## 207     Masculin            Jean           3 0.3947368
+## 208      Féminin          Jeanne           2 0.2631579
+## 209     Masculin    Jean-raphaël           1 0.1315789
+## 210      Féminin         Jessica           1 0.1315789
+## 211      Féminin          Jolyne           1 0.1315789
+## 212     Masculin           Jonas           1 0.1315789
+## 213      Féminin           Joyce           1 0.1315789
+## 214      Féminin          Judith           1 0.1315789
+## 215      Féminin            Judy           1 0.1315789
+## 216     Masculin           Jules           7 0.9210526
+## 217      Féminin           Julia           4 0.5263158
+## 218     Masculin          Julian           2 0.2631579
+## 219     Masculin         Juliane           1 0.1315789
+## 220      Féminin           Julie           1 0.1315789
+## 221      Féminin        Juliette           1 0.1315789
+## 222     Masculin        Julliann           1 0.1315789
+## 223      Féminin         Julyana           2 0.2631579
+## 224      Féminin         Justine           1 0.1315789
+## 225      Féminin         Kahlane           1 0.1315789
+## 226     Masculin            Kaïs           1 0.1315789
+## 227      Féminin        Kalheesi           1 0.1315789
+## 228     Masculin           Kalim           1 0.1315789
+## 229     Masculin         Kameron           1 0.1315789
+## 230     Masculin           Kamil           2 0.2631579
+## 231      Féminin          Kamila           1 0.1315789
+## 232      Féminin        Katalyna           1 0.1315789
+## 233      Féminin          Katlyn           1 0.1315789
+## 234     Masculin          Kayden           1 0.1315789
+## 235      Féminin           Kayla           1 0.1315789
+## 236      Féminin           Kélia           2 0.2631579
+## 237      Féminin           Kelis           1 0.1315789
+## 238      Féminin         Kélissa           1 0.1315789
+## 239      Féminin         Kenessy           1 0.1315789
+## 240     Masculin           Kenzo           2 0.2631579
+## 241     Masculin           Kévan           1 0.1315789
+## 242     Masculin           Kiran           1 0.1315789
+## 243      Féminin           Kyley           1 0.1315789
+## 244     Masculin         Kyliane           1 0.1315789
+## 245      Féminin           Lahna           1 0.1315789
+## 246      Féminin            Laïa           1 0.1315789
+## 247      Féminin            Lara           1 0.1315789
+## 248     Masculin         Laurent           1 0.1315789
+## 249      Féminin             Léa           5 0.6578947
+## 250      Féminin           Léana           1 0.1315789
+## 251     Masculin         Léandre           1 0.1315789
+## 252      Féminin           Léane           1 0.1315789
+## 253      Féminin          Leanna           1 0.1315789
+## 254      Féminin          Leeloo           1 0.1315789
+## 255      Féminin           Lehna           1 0.1315789
+## 256      Féminin           Leïla           1 0.1315789
+## 257      Féminin            Léna           2 0.2631579
+## 258     Masculin           Lenny           3 0.3947368
+## 259     Masculin             Léo           6 0.7894737
+## 260     Masculin            Léon           1 0.1315789
+## 261      Féminin           Lesia           1 0.1315789
+## 262     Masculin           Leven           1 0.1315789
+## 263     Masculin            Liam           3 0.3947368
+## 264      Féminin       Lila-rose           1 0.1315789
+## 265      Féminin           Liloé           1 0.1315789
+## 266      Féminin           Lilou           1 0.1315789
+## 267      Féminin           Lilya           1 0.1315789
+## 268      Féminin            Lina           2 0.2631579
+## 269      Féminin          Linaya           1 0.1315789
+## 270      Féminin         Lindsay           1 0.1315789
+## 271      Féminin         Lindsey           1 0.1315789
+## 272      Féminin            Line           1 0.1315789
+## 273      Féminin           Linna           1 0.1315789
+## 274     Masculin            Lino           1 0.1315789
+## 275      Féminin           Liris           1 0.1315789
+## 276      Féminin           Livia           1 0.1315789
+## 277     Masculin           Logan           1 0.1315789
+## 278      Féminin            Lola           4 0.5263158
+## 279     Masculin         Lorenzo           2 0.2631579
+## 280      Féminin             Lou           2 0.2631579
+## 281      Féminin          Louane           1 0.1315789
+## 282     Masculin           Louay           1 0.1315789
+## 283     Masculin          Loucas           1 0.1315789
+## 284     Masculin           Louie           1 0.1315789
+## 285     Masculin           Louis           3 0.3947368
+## 286      Féminin          Louisa           1 0.1315789
+## 287      Féminin          Louise           7 0.9210526
+## 288     Masculin         Louison           1 0.1315789
+## 289     Masculin             Luc           1 0.1315789
+## 290     Masculin           Lucas           5 0.6578947
+## 291      Féminin            Luce           1 0.1315789
+## 292      Féminin           Lucie           2 0.2631579
+## 293     Masculin          Lucien           1 0.1315789
+## 294     Masculin           Lucio           1 0.1315789
+## 295     Masculin           Lucka           1 0.1315789
+## 296      Féminin            Lucy           1 0.1315789
+## 297     Masculin            Luïs           1 0.1315789
+## 298      Féminin             Lya           2 0.2631579
+## 299      Féminin            Lyah           1 0.1315789
+## 300     Masculin            Lyam           2 0.2631579
+## 301      Féminin          Ly-ana           1 0.1315789
+## 302     Masculin            Lyès           2 0.2631579
+## 303     Masculin            Lyês           1 0.1315789
+## 304      Féminin           Lylou           1 0.1315789
+## 305      Féminin            Lyna           3 0.3947368
+## 306      Féminin            Lynn           1 0.1315789
+## 307     Masculin           Lyzio           1 0.1315789
+## 308      Féminin           Maddy           3 0.3947368
+## 309      Féminin       Madeleine           1 0.1315789
+## 310     Masculin             Maé           1 0.1315789
+## 311     Masculin            Maël           6 0.7894737
+## 312      Féminin          Maëlys           1 0.1315789
+## 313      Féminin           Mahau           1 0.1315789
+## 314     Masculin           Maher           1 0.1315789
+## 315     Masculin            Maho           1 0.1315789
+## 316      Féminin         Maliwan           1 0.1315789
+## 317     Masculin            Malo           2 0.2631579
+## 318     Masculin           Maloé           1 0.1315789
+## 319      Féminin           Maloë           1 0.1315789
+## 320     Masculin          Malone           2 0.2631579
+## 321      Féminin          Malone           1 0.1315789
+## 322     Masculin    Mame-n'diaga           1 0.1315789
+## 323     Masculin           Mando           1 0.1315789
+## 324     Masculin           Manoa           1 0.1315789
+## 325      Féminin           Manoa           1 0.1315789
+## 326     Masculin           Manoé           1 0.1315789
+## 327      Féminin           Manon           1 0.1315789
+## 328     Masculin            Manu           1 0.1315789
+## 329     Masculin             Mao           1 0.1315789
+## 330     Masculin         Marceau           1 0.1315789
+## 331     Masculin          Marcel           1 0.1315789
+## 332      Féminin       Marceline           1 0.1315789
+## 333      Féminin           Maria           1 0.1315789
+## 334      Féminin           Marie           1 0.1315789
+## 335      Féminin    Marie-amélie           1 0.1315789
+## 336     Masculin           Marin           1 0.1315789
+## 337     Masculin          Marius           4 0.5263158
+## 338     Masculin          Marley           2 0.2631579
+## 339      Féminin           Marta           1 0.1315789
+## 340      Féminin          Martha           1 0.1315789
+## 341     Masculin          Martin           1 0.1315789
+## 342     Masculin          Marvin           1 0.1315789
+## 343      Féminin           Marwa           1 0.1315789
+## 344      Féminin          Maryam           1 0.1315789
+## 345     Masculin           Matéo           2 0.2631579
+## 346     Masculin          Mathéo           2 0.2631579
+## 347      Féminin        Mathilde           1 0.1315789
+## 348     Masculin          Mathis           4 0.5263158
+## 349     Masculin          Mathys           5 0.6578947
+## 350     Masculin          Matias           1 0.1315789
+## 351     Masculin            Matt           1 0.1315789
+## 352     Masculin          Matteo           1 0.1315789
+## 353      Féminin         Maxance           1 0.1315789
+## 354     Masculin         Maxence           1 0.1315789
+## 355     Masculin           Maxim           1 0.1315789
+## 356     Masculin          Maxime           3 0.3947368
+## 357      Féminin          Mayana           1 0.1315789
+## 358      Féminin          Maylan           1 0.1315789
+## 359     Masculin          Mayron           2 0.2631579
+## 360     Masculin          Mayson           1 0.1315789
+## 361     Masculin         Maysone           1 0.1315789
+## 362      Féminin         Mayssae           1 0.1315789
+## 363     Masculin           Mehdi           2 0.2631579
+## 364      Féminin          Mélody           2 0.2631579
+## 365     Masculin          Merlin           1 0.1315789
+## 366      Féminin           Meryl           1 0.1315789
+## 367      Féminin             Mia           1 0.1315789
+## 368      Féminin            Mïla           1 0.1315789
+## 369     Masculin           Milan           1 0.1315789
+## 370      Féminin           Milia           1 0.1315789
+## 371     Masculin            Milo           3 0.3947368
+## 372      Féminin          Minori           1 0.1315789
+## 373     Masculin         Mohamed           4 0.5263158
+## 374     Masculin Mohamed-yassine           1 0.1315789
+## 375     Masculin        Moheydîn           1 0.1315789
+## 376     Masculin          Moncef           1 0.1315789
+## 377      Féminin             Mya           4 0.5263158
+## 378     Masculin            Naël           2 0.2631579
+## 379      Féminin           Naëly           1 0.1315789
+## 380     Masculin           Nahel           1 0.1315789
+## 381     Masculin           Nahil           1 0.1315789
+## 382      Féminin           Naomi           2 0.2631579
+## 383      Féminin          Naomie           1 0.1315789
+## 384     Masculin           Natan           1 0.1315789
+## 385     Masculin         Nathaël           1 0.1315789
+## 386     Masculin          Nathan           1 0.1315789
+## 387     Masculin       Nathanaël           1 0.1315789
+## 388      Féminin           Nayah           1 0.1315789
+## 389     Masculin           Nayte           1 0.1315789
+## 390      Féminin            Nell           1 0.1315789
+## 391      Féminin           Nelle           1 0.1315789
+## 392     Masculin         Néoh-zf           1 0.1315789
+## 393     Masculin          Ngolan           1 0.1315789
+## 394      Féminin           Nihen           1 0.1315789
+## 395      Féminin            Nina           1 0.1315789
+## 396     Masculin            Nino           3 0.3947368
+## 397     Masculin             Noa           2 0.2631579
+## 398     Masculin            Noam           1 0.1315789
+## 399     Masculin             Noé           1 0.1315789
+## 400      Féminin           Noémy           1 0.1315789
+## 401     Masculin          Nohlan           1 0.1315789
+## 402     Masculin           Nolan           1 0.1315789
+## 403      Féminin           Norah           2 0.2631579
+## 404      Féminin         Norhane           1 0.1315789
+## 405      Féminin            Nour           1 0.1315789
+## 406     Masculin          Nyhlan           1 0.1315789
+## 407      Féminin            Nyla           1 0.1315789
+## 408      Féminin          Océane           1 0.1315789
+## 409      Féminin         Océanne           1 0.1315789
+## 410     Masculin            Odah           1 0.1315789
+## 411      Féminin          Olivia           1 0.1315789
+## 412     Masculin           Oscar           3 0.3947368
+## 413      Féminin           Oyana           1 0.1315789
+## 414      Féminin          Paloma           1 0.1315789
+## 415      Féminin           Paola           1 0.1315789
+## 416     Masculin            Paul           2 0.2631579
+## 417      Féminin         Paulyne           1 0.1315789
+## 418      Féminin          Peyton           1 0.1315789
+## 419     Masculin          Pierre           2 0.2631579
+## 420     Masculin          Rafael           2 0.2631579
+## 421     Masculin        Raffaele           1 0.1315789
+## 422     Masculin         Raphaël           6 0.7894737
+## 423      Féminin       Raphaëlle           1 0.1315789
+## 424     Masculin            Ravi           1 0.1315789
+## 425     Masculin           Rayan           2 0.2631579
+## 426     Masculin          Rayane           1 0.1315789
+## 427     Masculin           Ricky           1 0.1315789
+## 428      Féminin         Rihanna           1 0.1315789
+## 429      Féminin            Rïme           1 0.1315789
+## 430      Féminin            Rita           1 0.1315789
+## 431      Féminin           Ritej           1 0.1315789
+## 432     Masculin           Robin           2 0.2631579
+## 433     Masculin          Romain           1 0.1315789
+## 434      Féminin          Romane           1 0.1315789
+## 435     Masculin           Roméo           2 0.2631579
+## 436      Féminin            Romy           2 0.2631579
+## 437      Féminin            Rose           1 0.1315789
+## 438     Masculin          Rubben           1 0.1315789
+## 439     Masculin           Ruben           1 0.1315789
+## 440     Masculin            Ryad           1 0.1315789
+## 441     Masculin           Sacha           4 0.5263158
+## 442     Masculin           Salim           1 0.1315789
+## 443     Masculin          Saliou           1 0.1315789
+## 444      Féminin          Samira           2 0.2631579
+## 445     Masculin          Samuel           2 0.2631579
+## 446     Masculin            Samy           1 0.1315789
+## 447     Masculin          Sandro           1 0.1315789
+## 448      Féminin           Sarah           1 0.1315789
+## 449     Masculin       Sebastian           1 0.1315789
+## 450     Masculin       Sébastien           1 0.1315789
+## 451      Féminin          Séléna           1 0.1315789
+## 452     Masculin          Serage           1 0.1315789
+## 453      Féminin           Shaya           1 0.1315789
+## 454      Féminin          Shelsy           1 0.1315789
+## 455      Féminin          Sheryl           1 0.1315789
+## 456      Féminin         Shéryne           1 0.1315789
+## 457     Masculin           Simon           1 0.1315789
+## 458     Masculin            Soan           1 0.1315789
+## 459     Masculin           Soann           2 0.2631579
+## 460      Féminin           Sofia           1 0.1315789
+## 461     Masculin           Sohan           4 0.5263158
+## 462     Masculin           Solan           1 0.1315789
+## 463      Féminin         Solenne           1 0.1315789
+## 464      Féminin          Soline           2 0.2631579
+## 465      Féminin          Sophie           2 0.2631579
+## 466      Féminin       Soundouss           1 0.1315789
+## 467     Masculin           Soyan           1 0.1315789
+## 468      Féminin          Tahiss           1 0.1315789
+## 469      Féminin           Taïna           1 0.1315789
+## 470      Féminin           Talya           1 0.1315789
+## 471     Masculin             Tao           1 0.1315789
+## 472      Féminin           Telya           1 0.1315789
+## 473      Féminin       Tennessee           1 0.1315789
+## 474     Masculin             Téo           1 0.1315789
+## 475     Masculin           Thaïs           1 0.1315789
+## 476      Féminin           Thaïs           2 0.2631579
+## 477     Masculin            Thao           1 0.1315789
+## 478      Féminin            Théa           5 0.6578947
+## 479     Masculin          Thélio           1 0.1315789
+## 480     Masculin            Théo           2 0.2631579
+## 481     Masculin          Thiago           2 0.2631579
+## 482     Masculin          Thilio           1 0.1315789
+## 483     Masculin           Tiago           2 0.2631579
+## 484     Masculin           Tiego           1 0.1315789
+## 485      Féminin           Timéa           1 0.1315789
+## 486     Masculin           Timéo           6 0.7894737
+## 487     Masculin          Timhéo           1 0.1315789
+## 488     Masculin             Tom           5 0.6578947
+## 489     Masculin           Tomàs           2 0.2631579
+## 490     Masculin            Tony           1 0.1315789
+## 491      Féminin          Tyanna           1 0.1315789
+## 492     Masculin        Valentin           2 0.2631579
+## 493      Féminin       Valentine           1 0.1315789
+## 494     Masculin       Valentino           1 0.1315789
+## 495     Masculin         Vicente           1 0.1315789
+## 496      Féminin        Victoire           1 0.1315789
+## 497     Masculin          Victor           3 0.3947368
+## 498     Masculin        Vincenzo           1 0.1315789
+## 499     Masculin          Wassim           2 0.2631579
+## 500      Féminin         Wijdane           1 0.1315789
+## 501      Féminin         Wijdene           1 0.1315789
+## 502     Masculin          Willow           1 0.1315789
+## 503     Masculin           Wyatt           2 0.2631579
+## 504     Masculin          Yacine           1 0.1315789
+## 505     Masculin            Yaël           1 0.1315789
+## 506     Masculin           Yanis           4 0.5263158
+## 507     Masculin            Yann           1 0.1315789
+## 508     Masculin          Yannis           1 0.1315789
+## 509      Féminin         Yasmina           1 0.1315789
+## 510     Masculin         Yassine           1 0.1315789
+## 511      Féminin           Yeliz           1 0.1315789
+## 512      Féminin           Ynaïa           1 0.1315789
+## 513     Masculin          Younes           1 0.1315789
+## 514      Féminin           Yvana           1 0.1315789
+## 515      Féminin           Zahra           2 0.2631579
+## 516      Féminin           Zayna           1 0.1315789
+## 517      Féminin          Zaynab           1 0.1315789
+## 518     Masculin             Zef           1 0.1315789
+## 519      Féminin           Zélie           1 0.1315789
+## 520     Masculin           Ziyad           1 0.1315789
+## 521      Féminin             Zoé           1 0.1315789
+## 522      Féminin            Zola           1 0.1315789
+## 523     Masculin           Zoran           1 0.1315789
+```
+
+
+---
+
+### %&gt;% let's pipe it all together %&gt;%
+
+We most of the time perform operations in series : sampling, selecting variable, creating a variable, refiltering, etc.
+
+To make it easier to combine those action without having to store intermediate results all the time, `tidyverse` allows you to chain them by using the `%&gt;%` operator, or **pipe**. Put after a function, if "passes" the result on to the next function you add after it.
+
+
+```r
+# as we filter to keep only female first names, the child gender column becomes unrelevant
+# we can pipe filter result to select to lighten our dataset
+
+firstnames %&gt;% filter(child_gender == "Féminin") %&gt;% 
+  select(child_1stname, occurrences)
+```
+
+```
+##     child_1stname occurrences
+## 1      Abbygaëlle           1
+## 2         Abigail           1
+## 3           Adèle           1
+## 4         Adriana           1
+## 5          Agathe           1
+## 6            Aïna           1
+## 7         Alessia           1
+## 8       Alexandra           1
+## 9          Alexia           1
+## 10          Alice           2
+## 11         Alicia           2
+## 12          Aliha           1
+## 13           Alix           3
+## 14          Aliya           1
+## 15         Aliyah           1
+## 16           Ally           1
+## 17           Alya           1
+## 18         Alyana           1
+## 19          Alyce           1
+## 20         Alycia           2
+## 21         Alyssa           1
+## 22          Ambre           6
+## 23            Ana           2
+## 24           Anaë           1
+## 25        Anaëlle           2
+## 26          Anaïa           1
+## 27         Andréa           1
+## 28        Andreea           1
+## 29           Anna           2
+## 30      Anna-rose           1
+## 31           Aria           3
+## 32           Arwa           1
+## 33          Assia           1
+## 34       Athénaïs           1
+## 35            Avä           1
+## 36         Ayline           1
+## 37        Azaliah           1
+## 38          Aziel           1
+## 39         Azilys           1
+## 40           Azza           1
+## 41         Bianca           1
+## 42           Blue           1
+## 43        Bryanna           1
+## 44          Calie           3
+## 45        Camille           1
+## 46       Capucine           3
+## 47          Carla           1
+## 48       Carolina           1
+## 49       Catalina           1
+## 50        Céleste           2
+## 51          Célia           1
+## 52        Chamina           1
+## 53        Charlie           1
+## 54       Charline           2
+## 55      Charlotte           1
+## 56       Cheyenne           1
+## 57          Chloé           4
+## 58          Circé           1
+## 59         Claire           1
+## 60          Clara           1
+## 61       Clémence           2
+## 62     Clémentine           1
+## 63           Cléo           1
+## 64        Déborah           1
+## 65          Diane           2
+## 66           Dina           1
+## 67          Douaa           1
+## 68           Eden           1
+## 69           Elea           1
+## 70           Eléa           1
+## 71          Elena           1
+## 72          Eléna           2
+## 73       Eléonore           1
+## 74           Elia           1
+## 75         Élinor           1
+## 76          Elise           2
+## 77          Élise           1
+## 78           Ella           1
+## 79          Elley           1
+## 80           Elsa           1
+## 81           Élya           1
+## 82          Elyna           1
+## 83         Émilie           1
+## 84           Emma           2
+## 85           Emmy           1
+## 86            Emy           2
+## 87           Enéa           1
+## 88          Esraa           1
+## 89        Estelle           1
+## 90            Eva           1
+## 91            Evy           1
+## 92          Fanny           1
+## 93         Flavie           1
+## 94      Gabrielle           2
+## 95       Giulyana           1
+## 96          Hanaé           1
+## 97         Harley           1
+## 98        Héloïse           1
+## 99          Hoana           1
+## 100         Ilaya           1
+## 101        Iléana           1
+## 102        Iliana           1
+## 103       Illyana           1
+## 104         Imène           1
+## 105         Inaya           2
+## 106          Ines           3
+## 107          Inès           1
+## 108         Iniya           1
+## 109          Iris           1
+## 110      Jacinthe           1
+## 111          Jade           5
+## 112          Jane           1
+## 113          Jazz           1
+## 114        Jeanne           2
+## 115       Jessica           1
+## 116        Jolyne           1
+## 117         Joyce           1
+## 118        Judith           1
+## 119          Judy           1
+## 120         Julia           4
+## 121         Julie           1
+## 122      Juliette           1
+## 123       Julyana           2
+## 124       Justine           1
+## 125       Kahlane           1
+## 126      Kalheesi           1
+## 127        Kamila           1
+## 128      Katalyna           1
+## 129        Katlyn           1
+## 130         Kayla           1
+## 131         Kélia           2
+## 132         Kelis           1
+## 133       Kélissa           1
+## 134       Kenessy           1
+## 135         Kyley           1
+## 136         Lahna           1
+## 137          Laïa           1
+## 138          Lara           1
+## 139           Léa           5
+## 140         Léana           1
+## 141         Léane           1
+## 142        Leanna           1
+## 143        Leeloo           1
+## 144         Lehna           1
+## 145         Leïla           1
+## 146          Léna           2
+## 147         Lesia           1
+## 148     Lila-rose           1
+## 149         Liloé           1
+## 150         Lilou           1
+## 151         Lilya           1
+## 152          Lina           2
+## 153        Linaya           1
+## 154       Lindsay           1
+## 155       Lindsey           1
+## 156          Line           1
+## 157         Linna           1
+## 158         Liris           1
+## 159         Livia           1
+## 160          Lola           4
+## 161           Lou           2
+## 162        Louane           1
+## 163        Louisa           1
+## 164        Louise           7
+## 165          Luce           1
+## 166         Lucie           2
+## 167          Lucy           1
+## 168           Lya           2
+## 169          Lyah           1
+## 170        Ly-ana           1
+## 171         Lylou           1
+## 172          Lyna           3
+## 173          Lynn           1
+## 174         Maddy           3
+## 175     Madeleine           1
+## 176        Maëlys           1
+## 177         Mahau           1
+## 178       Maliwan           1
+## 179         Maloë           1
+## 180        Malone           1
+## 181         Manoa           1
+## 182         Manon           1
+## 183     Marceline           1
+## 184         Maria           1
+## 185         Marie           1
+## 186  Marie-amélie           1
+## 187         Marta           1
+## 188        Martha           1
+## 189         Marwa           1
+## 190        Maryam           1
+## 191      Mathilde           1
+## 192       Maxance           1
+## 193        Mayana           1
+## 194        Maylan           1
+## 195       Mayssae           1
+## 196        Mélody           2
+## 197         Meryl           1
+## 198           Mia           1
+## 199          Mïla           1
+## 200         Milia           1
+## 201        Minori           1
+## 202           Mya           4
+## 203         Naëly           1
+## 204         Naomi           2
+## 205        Naomie           1
+## 206         Nayah           1
+## 207          Nell           1
+## 208         Nelle           1
+## 209         Nihen           1
+## 210          Nina           1
+## 211         Noémy           1
+## 212         Norah           2
+## 213       Norhane           1
+## 214          Nour           1
+## 215          Nyla           1
+## 216        Océane           1
+## 217       Océanne           1
+## 218        Olivia           1
+## 219         Oyana           1
+## 220        Paloma           1
+## 221         Paola           1
+## 222       Paulyne           1
+## 223        Peyton           1
+## 224     Raphaëlle           1
+## 225       Rihanna           1
+## 226          Rïme           1
+## 227          Rita           1
+## 228         Ritej           1
+## 229        Romane           1
+## 230          Romy           2
+## 231          Rose           1
+## 232        Samira           2
+## 233         Sarah           1
+## 234        Séléna           1
+## 235         Shaya           1
+## 236        Shelsy           1
+## 237        Sheryl           1
+## 238       Shéryne           1
+## 239         Sofia           1
+## 240       Solenne           1
+## 241        Soline           2
+## 242        Sophie           2
+## 243     Soundouss           1
+## 244        Tahiss           1
+## 245         Taïna           1
+## 246         Talya           1
+## 247         Telya           1
+## 248     Tennessee           1
+## 249         Thaïs           2
+## 250          Théa           5
+## 251         Timéa           1
+## 252        Tyanna           1
+## 253     Valentine           1
+## 254      Victoire           1
+## 255       Wijdane           1
+## 256       Wijdene           1
+## 257       Yasmina           1
+## 258         Yeliz           1
+## 259         Ynaïa           1
+## 260         Yvana           1
+## 261         Zahra           2
+## 262         Zayna           1
+## 263        Zaynab           1
+## 264         Zélie           1
+## 265           Zoé           1
+## 266          Zola           1
+```
+
+```r
+# note here the tabulation at the beginning of the newline "indent" after the pipe
+# it signals that the operation under is the continuation of the previous line
+```
+
+
+---
+
+### Grouped summary
+
+We often need to do calulation not at the scale of the whole dataset but for each value of a variable or combination of several variables. That's what the `group_by()` and `summarise()` functions are designed for.
+
+They work in pair :
+1. you create groups by listing the relevant variable(s) as argument(s) of `group_by()` ;
+2. then, you specify the name of a new calculated variable and the operation that will be applied to the groups you formed in `summarise()` (as you would do on the whole dataset with `mutate()`).
+
+
+```r
+firstnames %&gt;% group_by(child_gender) %&gt;% 
+  summarise(g_max = max(occurrences), g_mean = mean(occurrences))
+```
+
+```
+## # A tibble: 2 x 3
+##   child_gender g_max g_mean
+##   &lt;fct&gt;        &lt;int&gt;  &lt;dbl&gt;
+## 1 Féminin          7   1.31
+## 2 Masculin        10   1.60
+```
+
+
+
+
+---
+class: inverse, center, middle
+
+# Thank you !
+
+Contact : [sylvain@datactivist.coop](mailto:sylvain@datactivist.coop) / [@sylvainlapoix](https://twitter.com/sylvainlapoix)
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();</script>
+
+<script>
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

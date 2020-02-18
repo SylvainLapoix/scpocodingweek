@@ -1,0 +1,585 @@
+---
+title: "Coding week<br/>R for beginners"
+subtitle: "Day 1 : first approach<br/>and manipulation"
+author: "Sylvain Lapoix, Datactivist"
+date: "Sciences Po, 17/02/2020"
+output:
+  SlidesDatactivist::moon_reader:
+    css: [default, datactivist, datactivist-fonts]
+    lib_dir: libs
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+params:
+  event: R - Beginner / 17/02/2020
+  slug: introcoding_2020_1
+---
+
+layout: true
+  
+
+`r paste0("<div class='my-footer'><span>", params$event, "</span> <center><div class=logo><img src='https://github.com/datactivist/slides_datactivist/raw/master/inst/rmarkdown/templates/xaringan/resources/img/fond_noir_monochrome.png' width='100px'></center></span></div>")` 
+
+---
+
+class: center, middle
+
+Ces slides en ligne : `r paste0("http://sylvainlapoix.github.io/", params$slug)`
+
+Sources : `r paste0("https://github.com/sylvainlapoix/", params$slug)`
+
+
+Les productions de Datactivist sont librement réutilisables selon les termes de la licence [Creative Commons 4.0 BY-SA](https://creativecommons.org/licenses/by-sa/4.0/legalcode.fr).
+
+<BR>
+<BR>
+
+![](https://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-sa.png)
+
+
+---
+
+# Disclaimer : my moto
+
+> There are no silly questions.
+
+--
+
+> There's only awkward silences.
+
+
+---
+class: inverse, center, middle
+
+# 1 - The gear
+
+---
+## Why R ?
+R is a powerful, versatile and still improving programming language designed by and for daily data users.
+
+--
+
+It benefits from several keys components that make it incredibly handy :
+* a deep and **easy-to-find documentation** ;
+* a broad spectrum of **extensions and packages to fit any needs** (this presentation is entirely made in R) ;
+* a huge **connectivity** with other techs and tools (APIs, other languages such as Python, SQL or Javascript, etc.) ;
+* a **large and friendly community** ;
+* and it's **open source**, come on !
+
+--
+
+And for your specific need as .red[**policy analysts**], using R instead of Excel or (worse) Numbers means :
+* better tools ;
+* easier to share ;
+* simple to reproduce.
+
+
+---
+
+background-image: url(https://media.giphy.com/media/Ae7SI3LoPYj8Q/giphy.gif)
+class: center, top
+## You'll never be alone in R.
+
+---
+## Your new data hub : Rstudio
+As other programming languages, R can be used in the command line (which we'll refer to as "cli" further on, for "command line interface").
+
+But you'll benefit greatly from using a programming environnement.
+
+The one we'll choose is Rstudio. It will help you :
+* organize your files and data ;
+* keep track of your environment (we'll get back to that later) ;
+* solve most of common issues you'll encounter in an easier fashion.
+
+--
+
+Plus : it has MANY resources in [its cheatsheet page](https://www.rstudio.com/resources/cheatsheets/).
+
+---
+
+background-image: url(https://media.giphy.com/media/Gpf8A8aX2uWAg/giphy.gif)
+class: center, bottom
+
+### But let's take a look around ourselves
+
+---
+class: inverse, center, middle
+
+# 2 - The basics
+
+
+---
+
+## Data types
+
+You'll stumble upon 3 main types of data in R (and in computers in general) :
+
+.pull-left[1. **numeric values**, labeled "num" ;
+2. **strings**, labeled "chr" for "character" ;
+3. **boolean**, labeled "logi" for "logical".]
+
+.pull-right[1. quantities : you can make math with ;
+2. succession of character (can't do math with) ;
+3. TRUE or FALSE (basically the answer to a closed question)]
+
+--
+
+To those mains types you'll use other values for specific cases :
+* "NA", "#N/A" or "NaN", depending on the source, for "**not available**", describes a missing value in a dataset. **It's not "zero"** : it's a logical value that can be calculated (or evaluated) ;
+* "NULL" is an undefined value. It can't be evaluated and, in most cases, can't be coherced into something else.
+
+Other data types can be encountered in more advanced usage, such as geomatics ans statistics.
+
+---
+
+### Quick search : can you find 5 of each data type in the room ?
+
+---
+
+## R CLI basics
+
+The "command line interface" or CLI is just a big supercharged calculator that can do many simple operations :
+```{r}
+1+1-12*24/2 # Basic arithmetic
+42 %% 5 # Modulo
+```
+
+But it can also handle variables, meaning it can "store" values or data structures into a name and allow you to manipulate it. We'll say that we "assign" an object to a variable. In R, we do it with an arrow<sup>*</sup> :
+
+```{r}
+puregold <- (1+sqrt(5))/2
+puregold
+```
+
+---
+
+### Using functions
+
+We talked earlier about **data types**. But how can we check the type of a specific data ?
+
+Simple : you just need to put the data into a small program that performs the check for you. That's what we call a function and it works that way. Here, `typeof()` is **the function**, `3` **the argument** and `"double"` **the output** :
+
+```{r}
+typeof(3)
+```
+
+Some functions need a specific number of argument, some can use optional arguments and some need no argument. For example, `getcwd()` will tell you where you are in you filesystem without to provide further information to it.
+
+Some functions will output a single data point, other series of data and some will perform an operation without outputing anything (being *silent* as we say).
+
+There's pretty much a function for every routine task you may encounter.
+
+---
+
+## Data structures : vectors 1
+
+Data can be stored in different type of structures, depending on your needs or the tools you use.
+
+The **vector** is the core structure of R :
+* it is one dimensional ;
+* it is "atomic" (can contain only one type of data) ;
+* it is indexable (you can call any value it contains by its index).
+
+You can create a vector with the function `c()` with the values separated by commas :
+
+```{r}
+c(4, 8, 15, 16, 23, 42)
+```
+
+
+---
+
+## Data structures : vectors 2
+
+If you type it without any other command, it will vanish. To "store" it properly, you can "assign" it to a variable of your choice :
+
+```{r}
+lost <- c(4, 8, 15, 16, 23, 42)
+```
+
+You can call any value with an index :
+
+```{r}
+lost[1]
+```
+
+**Warning** : for those used to other languages : indexing starts at 1 in R (contrary to Python for ex).
+
+---
+
+## Data structures : vectors 3
+
+Data selection is essential to manipulate data : sorting, filtering, testing ... all of those operations rely on selection mecanism.
+
+To select multiple values of a vector, you'll use brackets and put a vector inside of it to specify the sequence :
+* with comma(s) if the values aren't consecutive ;
+* with colon(s) if you're looking for a range.
+
+```{r}
+year <- c("Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec")
+year[c(1:4)]
+year[c(1,6,10)]
+```
+
+
+---
+
+background-image: url(https://media.giphy.com/media/g0ShXDbLT7g4M/giphy.gif)
+class: inverse, center, top
+
+### Yes : a vector within a vector
+
+---
+
+## Data structures : matrices
+
+A matrix is a two dimensionnal data structure that can store one type of data.
+
+You can create it with the function `matrix(values, [nrow=x, ncol=y])`. For exemple, to create a 4 by 5 matrix containing all value between 1 and 20 we'll go :
+
+```{r}
+matrix(1:20, nrow = 4)
+```
+
+You can coherce a vector into a matrix or a variable containing a certain number of values.
+
+```{r}
+matrix(lost, nrow=3)
+```
+
+
+---
+
+## Data structures : data frames
+
+The go-to structure for data manipulation will be dataframes, two dimensionnal data structures that can contain different data types for each column.
+
+It's usually the data structure you'll end up with by loading an external fill. But you can make on youself by using the `data.frame()` function. To coherce several vectors together, for example.
+
+```{r}
+found <- c(1, 2, 3, 5, 8, 13)
+data.frame(lost, found)
+```
+
+
+
+You'll work with a similar type called "tibbles" in a short time.
+
+
+---
+class: inverse, center, middle
+
+# 3 - The exploration
+
+
+---
+
+## Loading a dataset
+
+From the outside, you can use : `read.csv()` for CSVs with the path to the file.
+
+*Lazy tip : if you're not used to paths, you can store the path into a variable after choosing by with the function file.choose().*
+
+For semi-colon separated values (or SCSV), you can use `read.csv2()`.
+
+But you'll encounter many other formats to handle.
+For text formats, we'll use `read.delim()`
+
+You can also load data from within libraries (every single has one). But well'll get to that later.
+
+Let's get into it with some ACTUAL data : [the list of the first names declared in the city of Bergerac](https://www.data.gouv.fr/fr/datasets/bergerac-listes-annuelles-des-prenoms-des-nouveaux-nes-declares-a-letat-civil/).
+
+---
+
+
+## What to do with it ?
+
+We can poke around to know what's in our file.
+
+First, we'll load it in our environment by assigning it to a variable :
+
+```{r}
+firstnames <- read.csv("../data/24037-etatcivil-prenoms-2018.csv")
+```
+
+### Beware of the accents!
+
+You may encounter some special character that will be read in a strange way. In French, for example, accents may be replaced by series of non-sensical signs.
+
+To be sure you can read all the signs is to specify the `encoding` as an argument of `read.csv()` as so :
+
+```{r}
+
+# for French accents, you can use "UTF-8" and sometimes "Latin-1" or "Latin1"
+# test each to find the one that works best !
+
+firstnames <- read.csv("../data/24037-etatcivil-prenoms-2018.csv", encoding = "UTF-8")
+```
+
+
+
+---
+
+## What to do with it ?
+
+
+Let's do three basic stuff. Each time, we'll use the variable in which we stored the database as the only argument :
+* check the name of the variables with `names()`
+* look at the first rows with `head()`
+* get a glimpse of the data with `summary()`
+
+```{r}
+
+names(firstnames) <- c("city_name","insee_code","child_gender","child_1stname","occurrences","year")
+
+```
+
+
+---
+
+### Get an idea of the distribution
+
+One of the most useful information we can gather from the start is **the distribution** of the data.
+
+Meaning how the different values are spread across the database for each variable.
+
+We can call the values for a specific variable by using `$` and adding the name of the variable. For example, we'll do `head(firstnames$ENFANT_PRENOM)` to see the first 6 first names in the database.
+
+If we want to know how many time each value appears in the datasets for a specific variable, we'll use the function `table()` with the variable we want to study. For example :
+
+```{r}
+table(firstnames$child_gender)
+
+
+```
+
+
+---
+
+### Let's make our first graph
+
+.pull-left[
+We'll stumble upon two types of variables :
+* **continuous variables**, that can take any value in a range (hence, numeric) ;
+* discontinuous or **discrete variables**, that only have a few possibilities (this is the case of some numeric and all character or logical variables).
+
+When we have a continuous variable, we can study the distribution in a very effective way with a **histogram**. A histogram visualises the frequency of each value. We have only on continuous variable here, `NOMBRE_OCCURRENCES`.
+]
+
+.pull-right[
+Here is a histogram of this variable :
+
+```{r}
+hist(firstnames$occurrences)
+```
+
+]
+
+---
+
+### Method : know what you manipulate
+
+Before we go any further, we need to assess what every component of the dataset means in the real world (*IRL*). To stick to the data science typology, we'll use the following term to describe the elements of a dataset :
+
+![](./img/dataset_structure.png)
+
+
+In this case, what does each **observation** stands for ? What does each **variable** mean ? How were the **values** computed ?
+
+.footnote[Source : [R for data science](https://r4ds.had.co.nz/tidy-data.html), Hadley Whickam.]
+
+---
+
+## Let's call our first library
+
+To make more of this dataset, we'll use a set of functions called **a library**. Most libraries are themed to fit specific tasks. In our case, we need tools to manipulate, wrangle and visualise the data. That's why we'll be installing **tidyverse**.
+
+```{r}
+# install.packages("tidyverse")
+library("tidyverse")
+```
+
+
+
+---
+
+### Side note : errors and warnings
+
+You may have encountered some colored output loading the library. Especially some .red[red and scary ones].
+
+--
+
+Don't panic : it will take at least 5 minutes for the hackers to break into your computer.
+
+--
+
+Just kidding.
+
+Those outputs may be of two kinds : warnings or errors. Let's explain :
+* a **warning** is just way the program signals you that it did something without asking (cohercing a type into another, hidding some missing data, etc.) ;
+* an **error** means that something was not done as you asked (couldn't make the caculation because of the type, couldn't find a file at the specified path, etc.).
+
+
+---
+
+### Side note : tests 1/2
+
+A test is an operation designed to check a condition on a object. It outputs wether **TRUE** or **FALSE**. It can be performed in a limited number of ways :
+
+```{r}
+5 == 3 # strict equality
+5 < 3 # strict inferiority
+5 >= 3 # superior or equal
+5 != 3 # opposite
+```
+
+
+---
+
+### Side note : tests 2/2
+
+In R, a test performed on a one dimensional data structure (vector, list, variable of a dataframe ...) output a vector of logical values. Each values being the result of the test for the value of the same index in the tested data structure.
+
+This logical vector can be used to select values according to a condition.
+
+Hence :
+**Tests are the base of conditional selection.**
+
+```{r}
+firstnames$child_gender == "Masculin"
+```
+
+
+---
+
+### Filter() : to focus on specific groups 1/2
+
+`filter()` allows you to select observations based on a test. The arguments are :
+1. the dataset ;
+2. one or several tests.
+
+You can select based on discrete values :
+```{r}
+
+dplyr::filter(firstnames, child_gender == "Masculin")
+
+```
+
+
+---
+
+### Filter() : to focus on specific groups 2/2
+
+
+You can select based on contiunous values :
+```{r}
+dplyr::filter(firstnames, occurrences > 3)
+```
+
+---
+
+### Select() : to focus on specific variables 1/2
+
+`select()` allows you to drop or keep variables from a dataset by listing their index or name.
+
+There are two main advantages :
+* a "narrower" dataset is easier to read ;
+* a "lighter" dataset is faster to compute.
+
+To choose what to drop, go for the fat, the redundant and the useless.
+
+In the first nam dataset case, all observations have the same value for the city (*"Bergerac"*)* and, consequently, the same for the citycode. As we only use 2018 data, the value of year stays consistant across the dataset. Hence, expandable.
+
+You can do the selection two ways : declaring what you keep or listing what you drop. Let's do this by quality first :
+
+```{r}
+dplyr::select(firstnames, child_gender, child_1stname, occurrences)
+```
+
+
+---
+
+### Select() : to focus on specific variables 2/2
+
+We can also do it by listing what we want to remove from the dataset and putting a minus sign in front of each.
+
+You can do it variable by variable but it can be a little tidious and sloppy. To make it more readable and easy to handle, we can use a vector listing the name of the variables we want to get rid of. Then, to *"unselect"* them, we add them as the 2d argument for `select()` with an opening minus sign :
+
+```{r}
+letgo <- c("city_name","insee_code","year")
+
+# to avoid a warning, we put our vector in the all_of() function :
+# the result is the same as the previous one
+
+f <- dplyr::select(firstnames, -all_of(letgo))
+f
+```
+
+
+---
+
+### Mutate() : to create the variables we need
+
+`mutate()` is used to create extra variable we may need.
+
+You can give it a fixed value but the most useful thing to do is assigning it an operation that will make an operation out of the other variables.
+
+For example : we can 
+
+```{r}
+
+dplyr::mutate(f, share = occurrences/(sum(firstnames$occurrences))*100)
+
+```
+
+
+---
+
+### %>% let's pipe it all together %>%
+
+We most of the time perform operations in series : sampling, selecting variable, creating a variable, refiltering, etc.
+
+To make it easier to combine those action without having to store intermediate results all the time, `tidyverse` allows you to chain them by using the `%>%` operator, or **pipe**. Put after a function, if "passes" the result on to the next function you add after it.
+
+```{r}
+
+# as we filter to keep only female first names, the child gender column becomes unrelevant
+# we can pipe filter result to select to lighten our dataset
+
+firstnames %>% filter(child_gender == "Féminin") %>% 
+  select(child_1stname, occurrences)
+
+# note here the tabulation at the beginning of the newline "indent" after the pipe
+# it signals that the operation under is the continuation of the previous line
+
+```
+
+
+---
+
+### Grouped summary
+
+We often need to do calulation not at the scale of the whole dataset but for each value of a variable or combination of several variables. That's what the `group_by()` and `summarise()` functions are designed for.
+
+They work in pair :
+1. you create groups by listing the relevant variable(s) as argument(s) of `group_by()` ;
+2. then, you specify the name of a new calculated variable and the operation that will be applied to the groups you formed in `summarise()` (as you would do on the whole dataset with `mutate()`).
+
+```{r}
+firstnames %>% group_by(child_gender) %>% 
+  summarise(g_max = max(occurrences), g_mean = mean(occurrences))
+
+```
+
+
+
+
+---
+class: inverse, center, middle
+
+# Thank you !
+
+Contact : [sylvain@datactivist.coop](mailto:sylvain@datactivist.coop) / [@sylvainlapoix](https://twitter.com/sylvainlapoix)
+
+
